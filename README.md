@@ -149,6 +149,8 @@ window.Umination.refresh()  // 後から追加された要素を再スキャン
 window.Umination.destroy()  // observer を解除・内部状態リセット
 ```
 
+`init()` 実行時、MutationObserver による動的要素の自動検知もデフォルトで有効になる。`document.body` 配下に effect class を持つ要素が追加されると、`refresh()` を手動で呼ばなくても自動でアニメーション対象に加わる。`refresh()` は後方互換として引き続き利用できる（MutationObserverの検知を待たず即時に再スキャンしたい場合に使う）。
+
 ES Module として import することもできる。
 
 ```js
@@ -175,4 +177,3 @@ import { initUmination, refreshUmination, destroyUmination, UMINATION_EFFECT_CLA
 - reset / layout / color / typography は含まない
 - アニメーション・transition・motion 関連のみ
 - hover 系・text reveal・clip-path 系は含まない
-- MutationObserver（動的要素の自動追跡）は含まない
