@@ -1,6 +1,7 @@
 :root {
   --umn-duration: 0.8s;
   --umn-delay: 0s;
+  --umn-stagger-step: 0.1s;
   --umn-distance: 24px;
   --umn-blur: 12px;
   --umn-scale: 0.88;
