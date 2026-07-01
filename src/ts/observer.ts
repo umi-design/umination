@@ -5,6 +5,7 @@ import {
   OBSERVER_OPTIONS,
 } from './constants.js'
 import { applyStagger } from './stagger.js'
+import { initMutationWatcher, destroyMutationWatcher } from './mutation-watcher.js'
 
 let observer: IntersectionObserver | null = null
 let initialized = false
@@ -40,6 +41,8 @@ export function initObserver(): void {
     observedElements.add(el)
     observer!.observe(el)
   })
+
+  initMutationWatcher(refreshObserver)
 }
 
 export function refreshObserver(): void {
@@ -61,5 +64,6 @@ export function destroyObserver(): void {
     observer = null
   }
   initialized = false
+  destroyMutationWatcher()
   // is-visible が付いた要素は残す（WeakSet はリセットのみ）
 }
