@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>umination — examples</title>
+  <script type="module" src="../dist/umination.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0c0c0c;
+      --bg-card: #141414;
+      --bg-code: #0f0f0f;
+      --border: rgba(255,255,255,0.07);
+      --text: #ddd;
+      --muted: #555;
+      --accent: #7dd3fc;
+      --green: #86efac;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ---- Layout ---- */
+    .wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+    /* ---- Header ---- */
+    .site-header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(12,12,12,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .site-header .logo {
+      font-size: 0.875rem; font-weight: 600; letter-spacing: -0.01em;
+    }
+    .site-header .logo em {
+      font-style: normal; color: var(--muted);
+      margin-left: 6px; font-size: 0.72rem;
+    }
+
+    /* ---- Buttons ---- */
+    .btn {
+      font-size: 0.72rem; padding: 5px 10px;
+      border-radius: 6px; border: 1px solid var(--border);
+      background: transparent; color: var(--muted);
+      cursor: pointer; transition: color 0.15s, border-color 0.15s;
+    }
+    .btn:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+
+    /* ---- Hero ---- */
+    .hero {
+      min-height: 80vh;
+      display: flex; flex-direction: column; justify-content: center;
+      gap: 16px; padding: 80px 0;
+    }
+    .hero-badge {
+      display: inline-flex; width: fit-content;
+      font-size: 0.72rem; font-family: monospace;
+      color: var(--accent); background: rgba(125,211,252,0.07);
+      border: 1px solid rgba(125,211,252,0.18);
+      border-radius: 100px; padding: 4px 12px;
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      letter-spacing: -0.04em; line-height: 1;
+    }
+    .hero p { font-size: 1rem; color: var(--muted); }
+
+    /* ---- Code block ---- */
+    .code-block {
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: 10px; overflow: hidden;
+      margin: 10px 0;
+    }
+    .code-block-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 7px 14px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.68rem; color: var(--muted);
+    }
+    .code-block pre { padding: 14px 16px; overflow-x: auto; }
+    .code-block code {
+      font-family: 'Menlo', 'Monaco', monospace;
+      font-size: 0.78rem; line-height: 1.7;
+      color: #cdd6f4;
+    }
+    .copy-btn {
+      font-size: 0.68rem; padding: 3px 8px;
+      border-radius: 4px; border: 1px solid var(--border);
+      background: transparent; color: var(--muted);
+      cursor: pointer; transition: color 0.15s, border-color 0.15s;
+    }
+    .copy-btn:hover { color: var(--text); }
+    .copy-btn.copied { color: var(--green); border-color: rgba(134,239,172,0.3); }
+
+    /* ---- Section ---- */
+    section { padding: 80px 0; border-top: 1px solid var(--border); }
+    .section-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 36px;
+    }
+    .section-label {
+      font-size: 0.68rem; text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--muted);
+    }
+    .section-title {
+      font-size: 1.375rem; font-weight: 600;
+      letter-spacing: -0.02em; margin-top: 4px;
+    }
+    .step-label {
+      font-size: 0.75rem; color: var(--muted);
+      margin: 20px 0 6px;
+    }
+    .step-label:first-child { margin-top: 0; }
+
+    /* ---- Demo cards ---- */
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(156px, 1fr));
+      gap: 10px;
+    }
+    .demo-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 14px;
+      font-size: 0.78rem; color: var(--muted);
+    }
+    .class-name {
+      display: block;
+      color: var(--accent); font-family: monospace;
+      font-size: 0.7rem; margin-bottom: 8px;
+    }
+
+    /* ---- Image grid ---- */
+    .img-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .img-card {
+      border-radius: 10px; overflow: hidden;
+      aspect-ratio: 4 / 3; position: relative;
+    }
+    .img-fill {
+      width: 100%; height: 100%;
+      display: flex; align-items: flex-end; padding: 10px;
+    }
+    .img-fill span {
+      font-size: 0.65rem; font-family: monospace;
+      color: rgba(255,255,255,0.5);
+      background: rgba(0,0,0,0.5);
+      padding: 2px 7px; border-radius: 3px;
+    }
+
+    /* ---- Stagger list ---- */
+    .stagger-list { display: flex; flex-direction: column; gap: 8px; }
+    .stagger-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 13px 18px;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 0.85rem;
+    }
+    .stagger-item code {
+      font-family: monospace; font-size: 0.72rem; color: var(--accent);
+    }
+
+    /* ---- Variable demo ---- */
+    .var-demo {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-bottom: 10px;
+    }
+    .var-demo h3 { font-size: 0.95rem; margin-bottom: 8px; }
+    .var-demo .vars {
+      font-family: monospace; font-size: 0.72rem; color: var(--accent);
+    }
+
+    /* ---- Footer ---- */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 0;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 0.72rem; color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <span class="logo">umination <em>v0.1</em></span>
+  <button class="btn" onclick="replayAll()">↺ Replay all</button>
+</header>
+
+<div class="wrap">
+
+  <!-- Hero -->
+  <div class="hero">
+    <span class="umn-fade-in hero-badge">@umi-design/umination</span>
+    <h1 class="umn-slide-up umn-delay-100">umination</h1>
+    <p class="umn-fade-in umn-delay-200">
+      class 1つ + script 1ファイル。<br>
+      軽量スクロールアニメーションライブラリ。
+    </p>
+  </div>
+
+  <!-- Usage -->
+  <section>
+    <div class="section-header">
+      <div>
+        <div class="section-label">Getting Started</div>
+        <div class="section-title">使い方</div>
+      </div>
+    </div>
+
+    <p class="step-label">① script を読み込む</p>
+    <div class="code-block umn-fade-in">
+      <div class="code-block-header">
+        <span>HTML</span>
+        <button class="copy-btn" data-copy='&lt;script type="module" src="/dist/umination.js"&gt;&lt;/script&gt;'>Copy</button>
+      </div>
+      <pre><code>&lt;script type="module" src="/dist/umination.js"&gt;&lt;/script&gt;</code></pre>
+    </div>
+
+    <p class="step-label">② effect class を付けるだけ — スクロールで自動発火</p>
+    <div class="code-block umn-fade-in umn-delay-100">
+      <div class="code-block-header">
+        <span>HTML</span>
+        <button class="copy-btn" data-copy='&lt;h2 class="umn-slide-up"&gt;Heading&lt;/h2&gt;
+&lt;p class="umn-fade-in umn-delay-200"&gt;Text&lt;/p&gt;
+&lt;img class="umn-scale-in" src="image.jpg" alt=""&gt;'>Copy</button>
+      </div>
+      <pre><code>&lt;h2 class="umn-slide-up"&gt;Heading&lt;/h2&gt;
+&lt;p class="umn-fade-in umn-delay-200"&gt;Text&lt;/p&gt;
+&lt;img class="umn-scale-in" src="image.jpg" alt=""&gt;</code></pre>
+    </div>
+
+    <p class="step-label">npm でも使えます</p>
+    <div class="code-block umn-fade-in umn-delay-200">
+      <div class="code-block-header">
+        <span>Shell</span>
+        <button class="copy-btn" data-copy="npm install @umi-design/umination">Copy</button>
+      </div>
+      <pre><code>npm install @umi-design/umination</code></pre>
+    </div>
+    <div class="code-block umn-fade-in umn-delay-300">
+      <div class="code-block-header">
+        <span>JavaScript</span>
+        <button class="copy-btn" data-copy="import { initUmination } from '@umi-design/umination';
+initUmination();">Copy</button>
+      </div>
+      <pre><code>import { initUmination } from '@umi-design/umination';
+initUmination();</code></pre>
+    </div>
+  </section>
+
+  <!-- Effects -->
+  <section id="effects">
+    <div class="section-header">
+      <div>
+        <div class="section-label">Effect classes</div>
+        <div class="section-title">エフェクト一覧</div>
+      </div>
+      <button class="btn" onclick="replaySection('effects')">↺ Replay</button>
+    </div>
+    <div class="demo-grid">
+      <div class="demo-card umn-fade-in">
+        <span class="class-name">umn-fade-in</span>
+        フェードイン
+      </div>
+      <div class="demo-card umn-slide-up">
+        <span class="class-name">umn-slide-up</span>
+        下から上へ
+      </div>
+      <div class="demo-card umn-slide-down">
+        <span class="class-name">umn-slide-down</span>
+        上から下へ
+      </div>
+      <div class="demo-card umn-slide-left">
+        <span class="class-name">umn-slide-left</span>
+        右から左へ
+      </div>
+      <div class="demo-card umn-slide-right">
+        <span class="class-name">umn-slide-right</span>
+        左から右へ
+      </div>
+      <div class="demo-card umn-blur-in">
+        <span class="class-name">umn-blur-in</span>
+        ブラーから鮮明に
+      </div>
+      <div class="demo-card umn-scale-in">
+        <span class="class-name">umn-scale-in</span>
+        スケールアップ
+      </div>
+    </div>
+  </section>
+
+  <!-- umn-scale-in + umn-img-zoom -->
+  <section id="images">
+    <div class="section-header">
+      <div>
+        <div class="section-label">umn-scale-in + umn-img-zoom</div>
+        <div class="section-title">Image — scroll &amp; hover</div>
+      </div>
+      <button class="btn" onclick="replaySection('images')">↺ Replay</button>
+    </div>
+    <p style="font-size:0.78rem; color:var(--muted); margin-bottom:16px;">スクロールで進入 → hover でズーム。2クラスを組み合わせるだけ。</p>
+    <div class="img-grid">
+      <div class="img-card umn-scale-in umn-img-zoom">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%231a1f35'/%3E%3Ccircle cx='110' cy='80' r='90' fill='%233a7bd5' opacity='.45'/%3E%3Ccircle cx='300' cy='220' r='70' fill='%230d7377' opacity='.35'/%3E%3C/svg%3E" alt="" style="height:100%;object-fit:cover;">
+      </div>
+      <div class="img-card umn-scale-in umn-img-zoom umn-delay-100">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%231e1535'/%3E%3Ccircle cx='280' cy='100' r='100' fill='%237b3acd' opacity='.4'/%3E%3Ccircle cx='100' cy='230' r='60' fill='%23d53a7b' opacity='.3'/%3E%3C/svg%3E" alt="" style="height:100%;object-fit:cover;">
+      </div>
+      <div class="img-card umn-scale-in umn-img-zoom umn-delay-200">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%23111a20'/%3E%3Ccircle cx='320' cy='80' r='80' fill='%2311998e' opacity='.5'/%3E%3Ccircle cx='80' cy='200' r='100' fill='%231e3a5f' opacity='.5'/%3E%3C/svg%3E" alt="" style="height:100%;object-fit:cover;">
+      </div>
+    </div>
+    <div class="code-block" style="margin-top:16px;">
+      <div class="code-block-header">
+        <span>HTML</span>
+        <button class="copy-btn" data-copy='&lt;div class="umn-scale-in umn-img-zoom"&gt;
+  &lt;img src="photo.jpg" alt=""&gt;
+&lt;/div&gt;'>Copy</button>
+      </div>
+      <pre><code>&lt;div class="umn-scale-in umn-img-zoom"&gt;
+  &lt;img src="photo.jpg" alt=""&gt;
+&lt;/div&gt;</code></pre>
+    </div>
+  </section>
+
+  <!-- umn-img-zoom (hover) -->
+  <section id="img-zoom">
+    <div class="section-header">
+      <div>
+        <div class="section-label">umn-img-zoom</div>
+        <div class="section-title">Image zoom — hover</div>
+      </div>
+    </div>
+    <p style="font-size:0.78rem; color:var(--muted); margin-bottom:16px;">コンテナに付けると、hover で内側の img が scale(1.05) にズーム。JS 不要。</p>
+    <div class="img-grid">
+      <div class="img-card umn-img-zoom umn-fade-in">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%231a1f35'/%3E%3Ccircle cx='110' cy='80' r='90' fill='%233a7bd5' opacity='.45'/%3E%3Ccircle cx='300' cy='220' r='70' fill='%230d7377' opacity='.35'/%3E%3C/svg%3E" alt="" style="height:100%;object-fit:cover;">
+      </div>
+      <div class="img-card umn-img-zoom umn-fade-in umn-delay-100">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%231e1535'/%3E%3Ccircle cx='280' cy='100' r='100' fill='%237b3acd' opacity='.4'/%3E%3Ccircle cx='100' cy='230' r='60' fill='%23d53a7b' opacity='.3'/%3E%3C/svg%3E" alt="" style="height:100%;object-fit:cover;">
+      </div>
+      <div class="img-card umn-img-zoom umn-fade-in umn-delay-200">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%23111a20'/%3E%3Ccircle cx='320' cy='80' r='80' fill='%2311998e' opacity='.5'/%3E%3Ccircle cx='80' cy='200' r='100' fill='%231e3a5f' opacity='.5'/%3E%3C/svg%3E" alt="" style="height:100%;object-fit:cover;">
+      </div>
+    </div>
+    <div class="code-block" style="margin-top:16px;">
+      <div class="code-block-header">
+        <span>HTML — コンテナに付けるだけ</span>
+        <button class="copy-btn" data-copy='&lt;div class="umn-img-zoom"&gt;
+  &lt;img src="photo.jpg" alt=""&gt;
+&lt;/div&gt;
+
+&lt;!-- &lt;a&gt; でも使えます --&gt;
+&lt;a class="umn-img-zoom" href="..."&gt;
+  &lt;img src="photo.jpg" alt=""&gt;
+&lt;/a&gt;'>Copy</button>
+      </div>
+      <pre><code>&lt;div class="umn-img-zoom"&gt;
+  &lt;img src="photo.jpg" alt=""&gt;
+&lt;/div&gt;
+
+&lt;!-- &lt;a&gt; でも使えます --&gt;
+&lt;a class="umn-img-zoom" href="..."&gt;
+  &lt;img src="photo.jpg" alt=""&gt;
+&lt;/a&gt;</code></pre>
+    </div>
+  </section>
+
+  <!-- Stagger -->
+  <section id="stagger">
+    <div class="section-header">
+      <div>
+        <div class="section-label">Stagger</div>
+        <div class="section-title">delay utility の組み合わせ</div>
+      </div>
+      <button class="btn" onclick="replaySection('stagger')">↺ Replay</button>
+    </div>
+    <div class="stagger-list">
+      <div class="stagger-item umn-slide-up">
+        <span>Item 1</span>
+        <code>umn-slide-up</code>
+      </div>
+      <div class="stagger-item umn-slide-up umn-delay-100">
+        <span>Item 2</span>
+        <code>umn-slide-up umn-delay-100</code>
+      </div>
+      <div class="stagger-item umn-slide-up umn-delay-200">
+        <span>Item 3</span>
+        <code>umn-slide-up umn-delay-200</code>
+      </div>
+      <div class="stagger-item umn-slide-up umn-delay-300">
+        <span>Item 4</span>
+        <code>umn-slide-up umn-delay-300</code>
+      </div>
+      <div class="stagger-item umn-slide-up umn-delay-400">
+        <span>Item 5</span>
+        <code>umn-slide-up umn-delay-400</code>
+      </div>
+    </div>
+    <div class="code-block" style="margin-top:16px;">
+      <div class="code-block-header">
+        <span>HTML</span>
+        <button class="copy-btn" data-copy='&lt;li class="umn-slide-up"&gt;Item 1&lt;/li&gt;
+&lt;li class="umn-slide-up umn-delay-100"&gt;Item 2&lt;/li&gt;
+&lt;li class="umn-slide-up umn-delay-200"&gt;Item 3&lt;/li&gt;
+&lt;li class="umn-slide-up umn-delay-300"&gt;Item 4&lt;/li&gt;'>Copy</button>
+      </div>
+      <pre><code>&lt;li class="umn-slide-up"&gt;Item 1&lt;/li&gt;
+&lt;li class="umn-slide-up umn-delay-100"&gt;Item 2&lt;/li&gt;
+&lt;li class="umn-slide-up umn-delay-200"&gt;Item 3&lt;/li&gt;
+&lt;li class="umn-slide-up umn-delay-300"&gt;Item 4&lt;/li&gt;</code></pre>
+    </div>
+  </section>
+
+  <!-- Delay -->
+  <section id="delay">
+    <div class="section-header">
+      <div>
+        <div class="section-label">Utility</div>
+        <div class="section-title">Delay</div>
+      </div>
+      <button class="btn" onclick="replaySection('delay')">↺ Replay</button>
+    </div>
+    <div class="demo-grid">
+      <div class="demo-card umn-fade-in">
+        <span class="class-name">（なし）</span>0ms
+      </div>
+      <div class="demo-card umn-fade-in umn-delay-100">
+        <span class="class-name">umn-delay-100</span>100ms
+      </div>
+      <div class="demo-card umn-fade-in umn-delay-200">
+        <span class="class-name">umn-delay-200</span>200ms
+      </div>
+      <div class="demo-card umn-fade-in umn-delay-300">
+        <span class="class-name">umn-delay-300</span>300ms
+      </div>
+      <div class="demo-card umn-fade-in umn-delay-500">
+        <span class="class-name">umn-delay-500</span>500ms
+      </div>
+      <div class="demo-card umn-fade-in umn-delay-700">
+        <span class="class-name">umn-delay-700</span>700ms
+      </div>
+      <div class="demo-card umn-fade-in umn-delay-1000">
+        <span class="class-name">umn-delay-1000</span>1000ms
+      </div>
+    </div>
+  </section>
+
+  <!-- Duration -->
+  <section id="duration">
+    <div class="section-header">
+      <div>
+        <div class="section-label">Utility</div>
+        <div class="section-title">Duration</div>
+      </div>
+      <button class="btn" onclick="replaySection('duration')">↺ Replay</button>
+    </div>
+    <div class="demo-grid">
+      <div class="demo-card umn-slide-up umn-duration-fast">
+        <span class="class-name">umn-duration-fast</span>0.4s
+      </div>
+      <div class="demo-card umn-slide-up umn-duration-normal">
+        <span class="class-name">umn-duration-normal</span>0.8s（default）
+      </div>
+      <div class="demo-card umn-slide-up umn-duration-slow">
+        <span class="class-name">umn-duration-slow</span>1.4s
+      </div>
+    </div>
+  </section>
+
+  <!-- Ease -->
+  <section id="ease">
+    <div class="section-header">
+      <div>
+        <div class="section-label">Utility</div>
+        <div class="section-title">Ease</div>
+      </div>
+      <button class="btn" onclick="replaySection('ease')">↺ Replay</button>
+    </div>
+    <div class="demo-grid">
+      <div class="demo-card umn-slide-up umn-ease-soft umn-duration-slow">
+        <span class="class-name">umn-ease-soft</span>ease-in-out
+      </div>
+      <div class="demo-card umn-slide-up umn-ease-out umn-duration-slow">
+        <span class="class-name">umn-ease-out</span>ease-out
+      </div>
+      <div class="demo-card umn-slide-up umn-ease-snappy umn-duration-slow">
+        <span class="class-name">umn-ease-snappy</span>snappy
+      </div>
+    </div>
+  </section>
+
+  <!-- CSS Variables -->
+  <section id="variables">
+    <div class="section-header">
+      <div>
+        <div class="section-label">CSS Variables</div>
+        <div class="section-title">style 属性で個別カスタマイズ</div>
+      </div>
+      <button class="btn" onclick="replaySection('variables')">↺ Replay</button>
+    </div>
+
+    <div class="var-demo umn-slide-up" style="--umn-distance: 60px; --umn-duration: 1.2s;">
+      <h3>大きな distance ＋ 長い duration</h3>
+      <p class="vars">--umn-distance: 60px; --umn-duration: 1.2s;</p>
+    </div>
+
+    <div class="var-demo umn-blur-in" style="--umn-blur: 24px; --umn-duration: 1.6s; --umn-delay: 0.3s;">
+      <h3>強いブラー ＋ 遅れて登場</h3>
+      <p class="vars">--umn-blur: 24px; --umn-duration: 1.6s; --umn-delay: 0.3s;</p>
+    </div>
+
+    <div class="var-demo umn-scale-in" style="--umn-scale: 0.8; --umn-duration: 1s;">
+      <h3>大きくスケールアップ</h3>
+      <p class="vars">--umn-scale: 0.8; --umn-duration: 1s;</p>
+    </div>
+
+    <div class="code-block" style="margin-top:8px;">
+      <div class="code-block-header">
+        <span>CSS Variables 一覧</span>
+        <button class="copy-btn" data-copy=":root {
+  --umn-duration: 0.8s;
+  --umn-delay: 0s;
+  --umn-distance: 24px;
+  --umn-blur: 12px;
+  --umn-scale: 0.96;
+  --umn-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}">Copy</button>
+      </div>
+      <pre><code>:root {
+  --umn-duration: 0.8s;
+  --umn-delay:    0s;
+  --umn-distance: 24px;
+  --umn-blur:     12px;
+  --umn-scale:    0.96;
+  --umn-ease:     cubic-bezier(0.22, 1, 0.36, 1);
+}</code></pre>
+    </div>
+  </section>
+
+  <footer>
+    <span>umination v0.1.0 — @umi-design/umination</span>
+    <span>MIT License</span>
+  </footer>
+
+</div>
+
+<script>
+  /* ---- Copy ---- */
+  document.querySelectorAll('.copy-btn[data-copy]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const text = btn.getAttribute('data-copy')
+        .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+      navigator.clipboard.writeText(text.trim()).then(() => {
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copy';
+          btn.classList.remove('copied');
+        }, 1500);
+      });
+    });
+  });
+
+  /* ---- Replay ---- */
+  function triggerReplay(els) {
+    els.forEach(el => el.classList.remove('is-visible'));
+    requestAnimationFrame(() => {
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (!e.isIntersecting) return;
+          e.target.classList.add('is-visible');
+          obs.unobserve(e.target);
+        });
+      }, { threshold: 0.05, rootMargin: '0px' });
+      els.forEach(el => obs.observe(el));
+    });
+  }
+
+  function replaySection(id) {
+    const section = document.getElementById(id);
+    if (!section) return;
+    triggerReplay([...section.querySelectorAll('.is-visible')]);
+  }
+
+  function replayAll() {
+    triggerReplay([...document.querySelectorAll('.is-visible')]);
+  }
+</script>
+
+</body>
+</html>

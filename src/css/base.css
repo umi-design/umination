@@ -1,0 +1,29 @@
+/* effect class 共通 transition（umn-ready 付与時のみ有効） */
+html.umn-ready [class*="umn-fade-in"],
+html.umn-ready [class*="umn-slide-"],
+html.umn-ready [class*="umn-blur-in"],
+html.umn-ready [class*="umn-scale-in"] {
+  transition-property: opacity, transform, filter;
+  transition-duration: var(--umn-duration);
+  transition-delay: var(--umn-delay);
+  transition-timing-function: var(--umn-ease);
+  will-change: opacity, transform;
+}
+
+/* is-visible 付与後は will-change を解放 */
+html.umn-ready [class*="umn-"].is-visible {
+  will-change: auto;
+}
+
+/* prefers-reduced-motion: reduce — 即時表示・transition 無効 */
+@media (prefers-reduced-motion: reduce) {
+  html.umn-ready [class*="umn-fade-in"],
+  html.umn-ready [class*="umn-slide-"],
+  html.umn-ready [class*="umn-blur-in"],
+  html.umn-ready [class*="umn-scale-in"] {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}

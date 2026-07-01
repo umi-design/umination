@@ -1,0 +1,23 @@
+/* ============================================
+   umination — utility classes
+   CSS variables を上書きするだけ。
+   ============================================ */
+
+/* delay */
+.umn-delay-100  { --umn-delay: 0.1s; }
+.umn-delay-200  { --umn-delay: 0.2s; }
+.umn-delay-300  { --umn-delay: 0.3s; }
+.umn-delay-400  { --umn-delay: 0.4s; }
+.umn-delay-500  { --umn-delay: 0.5s; }
+.umn-delay-700  { --umn-delay: 0.7s; }
+.umn-delay-1000 { --umn-delay: 1s; }
+
+/* duration */
+.umn-duration-fast   { --umn-duration: 0.4s; }
+.umn-duration-normal { --umn-duration: 0.8s; }
+.umn-duration-slow   { --umn-duration: 1.4s; }
+
+/* ease */
+.umn-ease-soft    { --umn-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+.umn-ease-out     { --umn-ease: cubic-bezier(0, 0, 0.2, 1); }
+.umn-ease-snappy  { --umn-ease: cubic-bezier(0.4, 0, 0.2, 1); }

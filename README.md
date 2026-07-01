@@ -1,0 +1,131 @@
+# umination
+
+スクロール表示アニメーションライブラリ。effect class 1つ + script 1ファイルで動作する。GSAP 非依存・data属性なし・base class なし。
+
+## script 1ファイルで使える
+
+```html
+<script type="module" src="/dist/umination.js"></script>
+
+<h2 class="umn-slide-up">Heading</h2>
+<p class="umn-fade-in">Text</p>
+<img class="umn-blur-in" src="/image.jpg" alt="">
+```
+
+CSS も自動注入される。別途 `<link>` は不要。
+
+## CSS のみで使う場合
+
+```html
+<link rel="stylesheet" href="/dist/umination.css">
+```
+
+この場合、JS による `html.umn-ready` 付与がないため初期非表示ルールは適用されない（= 要素は常に表示状態）。
+
+## 対応 effect class
+
+| class | 動作 |
+|---|---|
+| `umn-fade-in` | フェードイン |
+| `umn-slide-up` | 下から上へスライド |
+| `umn-slide-down` | 上から下へスライド |
+| `umn-slide-left` | 右から左へスライド |
+| `umn-slide-right` | 左から右へスライド |
+| `umn-blur-in` | ブラーを解除しながら表示 |
+| `umn-scale-in` | スケールアップしながら表示 |
+
+## Utility class
+
+### delay
+
+| class | 値 |
+|---|---|
+| `umn-delay-100` | 0.1s |
+| `umn-delay-200` | 0.2s |
+| `umn-delay-300` | 0.3s |
+| `umn-delay-400` | 0.4s |
+| `umn-delay-500` | 0.5s |
+| `umn-delay-700` | 0.7s |
+| `umn-delay-1000` | 1s |
+
+### duration
+
+| class | 値 |
+|---|---|
+| `umn-duration-fast` | 0.4s |
+| `umn-duration-normal` | 0.8s（デフォルト相当） |
+| `umn-duration-slow` | 1.4s |
+
+### ease
+
+| class | 値 |
+|---|---|
+| `umn-ease-soft` | cubic-bezier(0.25, 0.46, 0.45, 0.94) |
+| `umn-ease-out` | cubic-bezier(0, 0, 0.2, 1) |
+| `umn-ease-snappy` | cubic-bezier(0.4, 0, 0.2, 1) |
+
+## CSS variables
+
+各要素の `style` 属性で上書き可能。
+
+```css
+:root {
+  --umn-duration: 0.8s;
+  --umn-delay: 0s;
+  --umn-distance: 24px;
+  --umn-blur: 12px;
+  --umn-scale: 0.96;
+  --umn-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+```
+
+```html
+<div
+  class="umn-slide-up"
+  style="--umn-distance: 40px; --umn-duration: 1.2s;"
+>
+  Content
+</div>
+```
+
+## JS API
+
+```html
+<script type="module" src="/dist/umination.js"></script>
+```
+
+読み込み後 `window.Umination` でアクセスできる。
+
+```js
+window.Umination.init()     // 初期化（html に umn-ready を付与、対象要素を監視開始）
+window.Umination.refresh()  // 後から追加された要素を再スキャン
+window.Umination.destroy()  // observer を解除・内部状態リセット
+```
+
+ES Module として import することもできる。
+
+```js
+import { initUmination, refreshUmination, destroyUmination, UMINATION_EFFECT_CLASSES } from '@umi-design/umination'
+```
+
+## JS 無効時の考え方
+
+初期非表示ルールは `html.umn-ready` が付いている場合のみ有効。JS が無効なら `umn-ready` が付かないので、要素は通常通り表示される。コンテンツが見えなくなる心配はない。
+
+## prefers-reduced-motion 対応
+
+`prefers-reduced-motion: reduce` が設定されている環境では、transition を無効化し全要素を即時表示する。
+
+## npm package
+
+```
+@umi-design/umination
+```
+
+## v0.1 の範囲
+
+- GSAP 非依存
+- reset / layout / color / typography は含まない
+- アニメーション・transition・motion 関連のみ
+- hover 系・text reveal・clip-path 系は含まない
+- MutationObserver（動的要素の自動追跡）は含まない

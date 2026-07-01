@@ -1,0 +1,96 @@
+/* ============================================
+   umination — effect classes
+   初期非表示は html.umn-ready 付与時のみ有効。
+   JS が無効な場合はコンテンツが消えない。
+   ============================================ */
+
+/* umn-fade-in */
+html.umn-ready .umn-fade-in {
+  opacity: 0;
+}
+html.umn-ready .umn-fade-in.is-visible {
+  opacity: 1;
+}
+
+/* umn-slide-up */
+html.umn-ready .umn-slide-up {
+  opacity: 0;
+  transform: translateY(var(--umn-distance));
+}
+html.umn-ready .umn-slide-up.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* umn-slide-down */
+html.umn-ready .umn-slide-down {
+  opacity: 0;
+  transform: translateY(calc(var(--umn-distance) * -1));
+}
+html.umn-ready .umn-slide-down.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* umn-slide-left */
+html.umn-ready .umn-slide-left {
+  opacity: 0;
+  transform: translateX(var(--umn-distance));
+}
+html.umn-ready .umn-slide-left.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* umn-slide-right */
+html.umn-ready .umn-slide-right {
+  opacity: 0;
+  transform: translateX(calc(var(--umn-distance) * -1));
+}
+html.umn-ready .umn-slide-right.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* umn-blur-in */
+html.umn-ready .umn-blur-in {
+  opacity: 0;
+  filter: blur(var(--umn-blur));
+}
+html.umn-ready .umn-blur-in.is-visible {
+  opacity: 1;
+  filter: blur(0);
+}
+
+/* umn-scale-in */
+html.umn-ready .umn-scale-in {
+  opacity: 0;
+  transform: scale(var(--umn-scale));
+}
+html.umn-ready .umn-scale-in.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* umn-img-zoom — コンテナ hover で内側の img をズーム（CSS only・JS不要） */
+.umn-img-zoom {
+  overflow: hidden;
+  display: block;
+}
+.umn-img-zoom img,
+.umn-img-zoom picture > img {
+  display: block;
+  width: 100%;
+  transition: transform var(--umn-duration) var(--umn-ease);
+}
+.umn-img-zoom:hover {
+  cursor: zoom-in;
+}
+.umn-img-zoom:hover img,
+.umn-img-zoom:hover picture > img {
+  transform: scale(1.05);
+}
+@media (prefers-reduced-motion: reduce) {
+  .umn-img-zoom img,
+  .umn-img-zoom picture > img { transition: none; }
+}

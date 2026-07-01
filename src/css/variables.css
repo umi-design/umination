@@ -1,0 +1,8 @@
+:root {
+  --umn-duration: 0.8s;
+  --umn-delay: 0s;
+  --umn-distance: 24px;
+  --umn-blur: 12px;
+  --umn-scale: 0.88;
+  --umn-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}

@@ -1,0 +1,27 @@
+{
+  "name": "@umi-design/umination",
+  "version": "0.1.0",
+  "description": "軽量スクロールアニメーションライブラリ。effect class 1つ + script 1ファイルで動作。",
+  "type": "module",
+  "license": "MIT",
+  "main": "./dist/umination.js",
+  "module": "./dist/umination.js",
+  "style": "./dist/umination.css",
+  "exports": {
+    ".": "./dist/umination.js",
+    "./css": "./dist/umination.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build --mode dev && vite build --mode min",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.4",
+    "vite": "^6.0.0"
+  }
+}
