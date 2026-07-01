@@ -211,4 +211,4 @@ import { initUmination, refreshUmination, destroyUmination, UMINATION_EFFECT_CLA
 - GSAP 非依存
 - reset / layout / color / typography は含まない
 - アニメーション・transition・motion 関連のみ
-- hover 系・text reveal・clip-path 系は含まない
+- text reveal・clip-path 系は含まない（hover 系は `:hover` のみで完結する CSS only effect に限り対応済み。上記「hover 系」参照）
