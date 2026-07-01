@@ -48,6 +48,38 @@ CSS も自動注入される。別途 `<link>` は不要。
 </div>
 ```
 
+## Stagger
+
+親要素に `umn-stagger` class を付けると、直下の子要素（effect class を持つもの）に自動で連番の delay が付与される。
+
+```html
+<div class="umn-stagger">
+  <div class="umn-fade-in">1</div>
+  <div class="umn-fade-in">2</div>
+  <div class="umn-fade-in">3</div>
+</div>
+```
+
+刻み幅は `--umn-stagger-step`（デフォルト `0.1s`）で調整できる。
+
+```html
+<div class="umn-stagger" style="--umn-stagger-step: 0.2s;">
+  ...
+</div>
+```
+
+子要素に `umn-delay-*` utility class が明示的に付いている場合は、そちらが自動付番より優先される。
+
+```html
+<div class="umn-stagger">
+  <div class="umn-fade-in">1</div>
+  <div class="umn-fade-in umn-delay-1000">2（手動delayが優先される）</div>
+  <div class="umn-fade-in">3</div>
+</div>
+```
+
+対象になるのは直下の子要素のみ。孫要素以下は対象外。
+
 ## Utility class
 
 ### delay
@@ -86,9 +118,10 @@ CSS も自動注入される。別途 `<link>` は不要。
 :root {
   --umn-duration: 0.8s;
   --umn-delay: 0s;
+  --umn-stagger-step: 0.1s;
   --umn-distance: 24px;
   --umn-blur: 12px;
-  --umn-scale: 0.96;
+  --umn-scale: 0.88;
   --umn-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 ```
