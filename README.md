@@ -80,6 +80,18 @@ CSS も自動注入される。別途 `<link>` は不要。
 
 対象になるのは直下の子要素のみ。孫要素以下は対象外。
 
+## Repeat
+
+デフォルトでは、一度表示された要素は画面外に出ても再度非表示に戻らない。要素に `umn-repeat` class を追加すると、スクロールで画面内に入るたびに表示され、画面外に出ると再度非表示に戻る。
+
+```html
+<div class="umn-fade-in umn-repeat">
+  スクロールで出入りするたびに表示・非表示が切り替わる
+</div>
+```
+
+`umn-repeat` は他の effect class と組み合わせて使う utility。単体では効果を持たない。
+
 ## Utility class
 
 ### delay
@@ -150,6 +162,8 @@ window.Umination.destroy()  // observer を解除・内部状態リセット
 ```
 
 `init()` 実行時、MutationObserver による動的要素の自動検知もデフォルトで有効になる。`document.body` 配下に effect class を持つ要素が追加されると、`refresh()` を手動で呼ばなくても自動でアニメーション対象に加わる。`refresh()` は後方互換として引き続き利用できる（MutationObserverの検知を待たず即時に再スキャンしたい場合に使う）。
+
+`umn-repeat` を付けた要素は `destroy()` するまで監視され続ける（他の要素のように一度表示されたら `unobserve` されることはない）。
 
 ES Module として import することもできる。
 

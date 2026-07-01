@@ -59,9 +59,11 @@ src/
 │  ├─ utilities.css   delay / duration / ease utilities
 │  └─ index.css       @import まとめ
 ├─ ts/
-│  ├─ constants.ts    定数（UMINATION_EFFECT_CLASSES / UMINATION_READY_CLASS / UMINATION_VISIBLE_CLASS / OBSERVER_OPTIONS）
-│  ├─ inject-style.ts CSS 文字列を <style data-umination> として head に注入（重複注入防止）
-│  └─ observer.ts     IntersectionObserver 管理（init/refresh/destroy）
+│  ├─ constants.ts       定数（UMINATION_EFFECT_CLASSES / UMINATION_READY_CLASS / UMINATION_VISIBLE_CLASS / UMINATION_STAGGER_CLASS / UMINATION_REPEAT_CLASS / OBSERVER_OPTIONS）
+│  ├─ inject-style.ts    CSS 文字列を <style data-umination> として head に注入（重複注入防止）
+│  ├─ stagger.ts         applyStagger() — umn-stagger 配下の直下子要素に自動delay付番
+│  ├─ mutation-watcher.ts MutationObserverのdebounceラッパー（initMutationWatcher/destroyMutationWatcher）
+│  └─ observer.ts        IntersectionObserver 管理（init/refresh/destroy、umn-repeatの分岐を含む）
 └─ index.ts           エントリ（CSS注入 + 自動init + window.Umination 公開）
 ```
 
@@ -72,7 +74,7 @@ src/
 1. `index.css` を `?inline` で文字列 import（JSバンドルに同梱するため）と副作用 import（Vite が `dist/umination.css` を別途出力するため）の二重 import をしている
 2. `DOMContentLoaded`（または既に読み込み済みなら即時）で `initUmination()` を自動実行
 3. `initUmination()` → `injectStyle()` で CSS を head に注入 → `initObserver()` で `html` に `umn-ready` を付与し、`UMINATION_EFFECT_CLASSES` に該当する要素を `IntersectionObserver` で監視開始
-4. 交差したら `is-visible` を付与して即 `unobserve`（一度表示したら監視終了、`once` 相当の動作固定）
+4. 交差したら `is-visible` を付与して即 `unobserve`（一度表示したら監視終了、`once` 相当の動作がデフォルト）。ただし `umn-repeat` class を持つ要素は `unobserve` せず監視を継続し、`isIntersecting` に応じて `is-visible` をトグルする（`src/ts/observer.ts` の `onIntersect()` 内で分岐）
 5. `window.Umination.refresh()` は動的に追加された要素を再スキャンして未観測分のみ observe に追加（`WeakSet` で観測済みを管理）
 6. `window.Umination.destroy()` は observer を disconnect するのみ。`is-visible` が付いた要素のクラスは剥がさない
 
