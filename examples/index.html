@@ -390,44 +390,42 @@ initUmination();</code></pre>
     <div class="section-header">
       <div>
         <div class="section-label">Stagger</div>
-        <div class="section-title">delay utility の組み合わせ</div>
+        <div class="section-title">umn-stagger — 自動連番delay</div>
       </div>
       <button class="btn" onclick="replaySection('stagger')">↺ Replay</button>
     </div>
-    <div class="stagger-list">
+    <p style="font-size:0.78rem; color:var(--muted); margin-bottom:16px;">親要素に umn-stagger を付けるだけで、直下の子要素に自動で連番の delay が付与される。</p>
+    <div class="stagger-list umn-stagger">
       <div class="stagger-item umn-slide-up">
         <span>Item 1</span>
-        <code>umn-slide-up</code>
       </div>
-      <div class="stagger-item umn-slide-up umn-delay-100">
+      <div class="stagger-item umn-slide-up">
         <span>Item 2</span>
-        <code>umn-slide-up umn-delay-100</code>
       </div>
-      <div class="stagger-item umn-slide-up umn-delay-200">
+      <div class="stagger-item umn-slide-up">
         <span>Item 3</span>
-        <code>umn-slide-up umn-delay-200</code>
       </div>
-      <div class="stagger-item umn-slide-up umn-delay-300">
+      <div class="stagger-item umn-slide-up">
         <span>Item 4</span>
-        <code>umn-slide-up umn-delay-300</code>
       </div>
-      <div class="stagger-item umn-slide-up umn-delay-400">
+      <div class="stagger-item umn-slide-up">
         <span>Item 5</span>
-        <code>umn-slide-up umn-delay-400</code>
       </div>
     </div>
     <div class="code-block" style="margin-top:16px;">
       <div class="code-block-header">
         <span>HTML</span>
-        <button class="copy-btn" data-copy='&lt;li class="umn-slide-up"&gt;Item 1&lt;/li&gt;
-&lt;li class="umn-slide-up umn-delay-100"&gt;Item 2&lt;/li&gt;
-&lt;li class="umn-slide-up umn-delay-200"&gt;Item 3&lt;/li&gt;
-&lt;li class="umn-slide-up umn-delay-300"&gt;Item 4&lt;/li&gt;'>Copy</button>
+        <button class="copy-btn" data-copy='&lt;ul class="umn-stagger"&gt;
+  &lt;li class="umn-slide-up"&gt;Item 1&lt;/li&gt;
+  &lt;li class="umn-slide-up"&gt;Item 2&lt;/li&gt;
+  &lt;li class="umn-slide-up"&gt;Item 3&lt;/li&gt;
+&lt;/ul&gt;'>Copy</button>
       </div>
-      <pre><code>&lt;li class="umn-slide-up"&gt;Item 1&lt;/li&gt;
-&lt;li class="umn-slide-up umn-delay-100"&gt;Item 2&lt;/li&gt;
-&lt;li class="umn-slide-up umn-delay-200"&gt;Item 3&lt;/li&gt;
-&lt;li class="umn-slide-up umn-delay-300"&gt;Item 4&lt;/li&gt;</code></pre>
+      <pre><code>&lt;ul class="umn-stagger"&gt;
+  &lt;li class="umn-slide-up"&gt;Item 1&lt;/li&gt;
+  &lt;li class="umn-slide-up"&gt;Item 2&lt;/li&gt;
+  &lt;li class="umn-slide-up"&gt;Item 3&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
     </div>
   </section>
 
