@@ -34,6 +34,20 @@ CSS も自動注入される。別途 `<link>` は不要。
 | `umn-blur-in` | ブラーを解除しながら表示 |
 | `umn-scale-in` | スケールアップしながら表示 |
 
+### hover 系（CSS only・JS不要）
+
+| class | 動作 |
+|---|---|
+| `umn-img-zoom` | コンテナに付けると、hover 時に内側の `img` / `picture > img` が `scale(1.05)` にズーム |
+
+`umn-img-zoom` は scroll 表示 effect（`umn-fade-in` 等）と組み合わせて使える。
+
+```html
+<div class="umn-scale-in umn-img-zoom">
+  <img src="/image.jpg" alt="">
+</div>
+```
+
 ## Utility class
 
 ### delay
