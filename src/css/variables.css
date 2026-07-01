@@ -6,4 +6,9 @@
   --umn-blur: 12px;
   --umn-scale: 0.88;
   --umn-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --umn-hover-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  --umn-hover-lift-distance: -4px;
+  --umn-hover-border-color: currentColor;
+  --umn-hover-tilt-deg: -2deg;
+  --umn-hover-opacity: 0.7;
 }

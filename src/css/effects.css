@@ -94,3 +94,48 @@ html.umn-ready .umn-scale-in.is-visible {
   .umn-img-zoom img,
   .umn-img-zoom picture > img { transition: none; }
 }
+
+/* umn-hover-lift — hoverで浮き上がる（box-shadow拡大 + translateY） */
+.umn-hover-lift {
+  transition: transform var(--umn-duration) var(--umn-ease), box-shadow var(--umn-duration) var(--umn-ease);
+}
+.umn-hover-lift:hover {
+  transform: translateY(var(--umn-hover-lift-distance));
+  box-shadow: var(--umn-hover-shadow);
+}
+@media (prefers-reduced-motion: reduce) {
+  .umn-hover-lift { transition: none; }
+}
+
+/* umn-hover-border — hoverでborder-colorが変化 */
+.umn-hover-border {
+  transition: border-color var(--umn-duration) var(--umn-ease);
+}
+.umn-hover-border:hover {
+  border-color: var(--umn-hover-border-color);
+}
+@media (prefers-reduced-motion: reduce) {
+  .umn-hover-border { transition: none; }
+}
+
+/* umn-hover-tilt — hoverで軽く傾く */
+.umn-hover-tilt {
+  transition: transform var(--umn-duration) var(--umn-ease);
+}
+.umn-hover-tilt:hover {
+  transform: rotate(var(--umn-hover-tilt-deg));
+}
+@media (prefers-reduced-motion: reduce) {
+  .umn-hover-tilt { transition: none; }
+}
+
+/* umn-hover-fade — hoverでopacityが変化 */
+.umn-hover-fade {
+  transition: opacity var(--umn-duration) var(--umn-ease);
+}
+.umn-hover-fade:hover {
+  opacity: var(--umn-hover-opacity);
+}
+@media (prefers-reduced-motion: reduce) {
+  .umn-hover-fade { transition: none; }
+}
