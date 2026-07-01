@@ -4,6 +4,7 @@ import {
   UMINATION_VISIBLE_CLASS,
   OBSERVER_OPTIONS,
 } from './constants.js'
+import { applyStagger } from './stagger.js'
 
 let observer: IntersectionObserver | null = null
 let initialized = false
@@ -31,6 +32,7 @@ export function initObserver(): void {
   initialized = true
 
   document.documentElement.classList.add(UMINATION_READY_CLASS)
+  applyStagger()
   observer = createObserver()
 
   const elements = document.querySelectorAll(getSelector())
@@ -43,6 +45,7 @@ export function initObserver(): void {
 export function refreshObserver(): void {
   if (!observer) return
 
+  applyStagger()
   const elements = document.querySelectorAll(getSelector())
   elements.forEach((el) => {
     if (!observedElements.has(el)) {
