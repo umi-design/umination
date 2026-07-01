@@ -40,7 +40,7 @@ html.umn-ready .umn-slide-up { opacity: 0; }
 - clip-path 系（v0.1 範囲外）
 - GSAP 依存
 
-hover 系は `umn-img-zoom`（`:hover` のみで完結する CSS only effect）に限り例外として許可。IntersectionObserver・JS 側の状態管理を伴う hover 系は追加しない。MutationObserver による動的要素検知は `init()` 時にデフォルトで有効（`src/ts/mutation-watcher.ts`）。監視範囲は `document.body` 全体固定で、opt-inセレクタ方式は追加しない。
+hover 系は `:hover` のみで完結する CSS only effect（`umn-img-zoom` / `umn-hover-lift` / `umn-hover-border` / `umn-hover-tilt` / `umn-hover-fade`）に限り例外として許可。IntersectionObserver・JS 側の状態管理を伴う hover 系は追加しない。MutationObserver による動的要素検知は `init()` 時にデフォルトで有効（`src/ts/mutation-watcher.ts`）。監視範囲は `document.body` 全体固定で、opt-inセレクタ方式は追加しない。
 
 ## 変更時の注意
 

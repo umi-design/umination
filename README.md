@@ -39,6 +39,10 @@ CSS も自動注入される。別途 `<link>` は不要。
 | class | 動作 |
 |---|---|
 | `umn-img-zoom` | コンテナに付けると、hover 時に内側の `img` / `picture > img` が `scale(1.05)` にズーム |
+| `umn-hover-lift` | hover 時に box-shadow が拡大し、わずかに浮き上がる |
+| `umn-hover-border` | hover 時に `border-color` が変化（デフォルト `currentColor`） |
+| `umn-hover-tilt` | hover 時に軽く傾く（デフォルト `-2deg`） |
+| `umn-hover-fade` | hover 時に `opacity` が変化（デフォルト `0.7`） |
 
 `umn-img-zoom` は scroll 表示 effect（`umn-fade-in` 等）と組み合わせて使える。
 
@@ -47,6 +51,18 @@ CSS も自動注入される。別途 `<link>` は不要。
   <img src="/image.jpg" alt="">
 </div>
 ```
+
+`umn-hover-*` も同様に組み合わせ可能。複数の `umn-hover-*` を同時に付けることもできる。
+
+```html
+<button class="umn-hover-lift umn-hover-border">
+  hoverで浮き上がりつつ枠線が変化するボタン
+</button>
+```
+
+`umn-hover-border` を使う場合、要素に `border`（`border-width`/`border-style`）を別途指定する必要がある（uminationは border の太さ・スタイルを強制しない、色の変化のみを提供する）。
+
+`umn-hover-lift`/`umn-hover-tilt` はコンテナ自身に `transform` を適用するため、`umn-slide-*`/`umn-scale-in` のようなtransform系のスクロール表示effectと同じ要素に組み合わせると、hover時のtransformがスクロール表示時のtransformを上書きする場合がある。
 
 ## Stagger
 
@@ -135,6 +151,11 @@ CSS も自動注入される。別途 `<link>` は不要。
   --umn-blur: 12px;
   --umn-scale: 0.88;
   --umn-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --umn-hover-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  --umn-hover-lift-distance: -4px;
+  --umn-hover-border-color: currentColor;
+  --umn-hover-tilt-deg: -2deg;
+  --umn-hover-opacity: 0.7;
 }
 ```
 
