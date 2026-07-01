@@ -2,6 +2,7 @@ import {
   UMINATION_EFFECT_CLASSES,
   UMINATION_READY_CLASS,
   UMINATION_VISIBLE_CLASS,
+  UMINATION_REPEAT_CLASS,
   OBSERVER_OPTIONS,
 } from './constants.js'
 import { applyStagger } from './stagger.js'
@@ -17,6 +18,13 @@ function getSelector(): string {
 
 function onIntersect(entries: IntersectionObserverEntry[]): void {
   for (const entry of entries) {
+    const isRepeat = entry.target.classList.contains(UMINATION_REPEAT_CLASS)
+
+    if (isRepeat) {
+      entry.target.classList.toggle(UMINATION_VISIBLE_CLASS, entry.isIntersecting)
+      continue
+    }
+
     if (entry.isIntersecting) {
       entry.target.classList.add(UMINATION_VISIBLE_CLASS)
       observer?.unobserve(entry.target)

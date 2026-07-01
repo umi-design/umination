@@ -1,6 +1,7 @@
 export const UMINATION_READY_CLASS = 'umn-ready'
 export const UMINATION_VISIBLE_CLASS = 'is-visible'
 export const UMINATION_STAGGER_CLASS = 'umn-stagger'
+export const UMINATION_REPEAT_CLASS = 'umn-repeat'
 
 export const UMINATION_EFFECT_CLASSES = [
   'umn-fade-in',
