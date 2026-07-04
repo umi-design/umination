@@ -819,6 +819,35 @@ initUmination();</code></pre>
         </div>
       </section>
 
+      <!-- 10 Parallax -->
+      <section id="parallax">
+        <div class="section-header-row">
+          <div>
+            <div class="section-label">10 / CSS scroll-driven・JS 不要</div>
+            <div class="section-title">Parallax</div>
+          </div>
+        </div>
+        <p class="section-lead">animation-timeline: view() によるスクロール連動の視差。未対応ブラウザでは通常表示に degrade する。方向は umn-parallax（up・デフォルト）/ -down / -left / -right、速度は umn-parallax-slow / -fast または --umn-parallax-speed で指定する。</p>
+        <div class="card-grid">
+          <div class="doc-card umn-parallax">
+            <span class="class-name">umn-parallax</span>
+            up・デフォルト速度
+          </div>
+          <div class="doc-card umn-parallax umn-parallax-down umn-parallax-fast">
+            <span class="class-name">umn-parallax-down umn-parallax-fast</span>
+            down・高速
+          </div>
+          <div class="doc-card umn-parallax umn-parallax-left umn-parallax-slow">
+            <span class="class-name">umn-parallax-left umn-parallax-slow</span>
+            left・低速
+          </div>
+          <div class="doc-card umn-parallax umn-parallax-right" style="--umn-parallax-speed: 0.4;">
+            <span class="class-name">umn-parallax-right</span>
+            right・任意値 (--umn-parallax-speed: 0.4)
+          </div>
+        </div>
+      </section>
+
       <!-- 11 JS API -->
       <section id="api">
         <div class="section-header-row">
