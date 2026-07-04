@@ -20,3 +20,14 @@ export const OBSERVER_OPTIONS: IntersectionObserverInit = {
   rootMargin: '0px 0px -10% 0px',
   threshold: 0.1,
 }
+
+export const UMINATION_TYPING_CLASS = 'umn-typing'
+export const UMINATION_TYPING_CHAR_CLASS = 'umn-char'
+export const UMINATION_TYPING_CURSOR_CLASS = 'umn-typing-cursor'
+export const UMINATION_TYPING_TYPED_CLASS = 'is-typed'
+
+export const TYPING_OBSERVER_OPTIONS: IntersectionObserverInit = {
+  root: null,
+  rootMargin: '0px 0px -10% 0px',
+  threshold: 0.1,
+}
