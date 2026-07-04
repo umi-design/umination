@@ -33,4 +33,5 @@
   --umn-scroll-duration: 1.6s;
   --umn-scroll-size: 26px;
   --umn-typing-speed: 45ms;
+  --umn-parallax-speed: 0.15;
 }

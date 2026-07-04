@@ -658,3 +658,41 @@ html.umn-ready .umn-typing .umn-char.is-typed {
     display: none;
   }
 }
+
+/* ============================================
+   umn-parallax — スクロール連動の視差（CSS scroll-driven animations）
+   JS 非依存。animation-timeline: view() 未対応ブラウザでは
+   通常表示（視差なし）に degrade する。
+   ============================================ */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .umn-parallax {
+      animation-name: umn-parallax-up;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+      will-change: transform;
+    }
+    .umn-parallax-down  { animation-name: umn-parallax-down; }
+    .umn-parallax-left  { animation-name: umn-parallax-left; }
+    .umn-parallax-right { animation-name: umn-parallax-right; }
+
+    @keyframes umn-parallax-up {
+      from { transform: translateY(calc(var(--umn-parallax-speed) * 50vh)); }
+      to   { transform: translateY(calc(var(--umn-parallax-speed) * -50vh)); }
+    }
+    @keyframes umn-parallax-down {
+      from { transform: translateY(calc(var(--umn-parallax-speed) * -50vh)); }
+      to   { transform: translateY(calc(var(--umn-parallax-speed) * 50vh)); }
+    }
+    @keyframes umn-parallax-left {
+      from { transform: translateX(calc(var(--umn-parallax-speed) * 50vh)); }
+      to   { transform: translateX(calc(var(--umn-parallax-speed) * -50vh)); }
+    }
+    @keyframes umn-parallax-right {
+      from { transform: translateX(calc(var(--umn-parallax-speed) * -50vh)); }
+      to   { transform: translateX(calc(var(--umn-parallax-speed) * 50vh)); }
+    }
+  }
+}
