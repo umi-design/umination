@@ -1,6 +1,8 @@
 import {
   UMINATION_TYPING_CLASS,
   UMINATION_TYPING_CHAR_CLASS,
+  UMINATION_TYPING_CURSOR_CLASS,
+  UMINATION_TYPING_TYPED_CLASS,
 } from './constants.js'
 
 export function splitIntoChars(el: HTMLElement): HTMLElement[] {
@@ -25,4 +27,47 @@ export function splitIntoChars(el: HTMLElement): HTMLElement[] {
 
 export function getSelector(): string {
   return `.${UMINATION_TYPING_CLASS}`
+}
+
+export function createCursor(): HTMLElement {
+  const cursor = document.createElement('span')
+  cursor.className = UMINATION_TYPING_CURSOR_CLASS
+  cursor.setAttribute('aria-hidden', 'true')
+  return cursor
+}
+
+function getTypingSpeed(el: HTMLElement): number {
+  const value = getComputedStyle(el).getPropertyValue('--umn-typing-speed')
+  const parsed = parseFloat(value)
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 45
+}
+
+export function typeElement(el: HTMLElement, chars: HTMLElement[], cursor: HTMLElement): void {
+  if (chars.length === 0) return
+
+  el.insertBefore(cursor, chars[0])
+
+  const speed = getTypingSpeed(el)
+  let index = 0
+  let startTime: number | null = null
+
+  function step(timestamp: number): void {
+    if (startTime === null) startTime = timestamp
+    const elapsed = timestamp - startTime
+    const targetIndex = Math.min(chars.length, Math.floor(elapsed / speed) + 1)
+
+    while (index < targetIndex) {
+      chars[index].classList.add(UMINATION_TYPING_TYPED_CLASS)
+      chars[index].after(cursor)
+      index++
+    }
+
+    if (index < chars.length) {
+      requestAnimationFrame(step)
+    } else {
+      cursor.remove()
+    }
+  }
+
+  requestAnimationFrame(step)
 }
