@@ -139,3 +139,490 @@ html.umn-ready .umn-scale-in.is-visible {
 @media (prefers-reduced-motion: reduce) {
   .umn-hover-fade { transition: none; }
 }
+
+/* ============================================
+   umn-hover-* v0.2 追加分
+   text/line・button・link/nav・card/container
+   全て :hover のみで完結（CSS only・JS不要）
+   ============================================ */
+
+/* umn-hover-underline — 下線が左から右へ描画される */
+.umn-hover-underline {
+  position: relative;
+}
+.umn-hover-underline::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.15em;
+  width: 100%;
+  height: 1px;
+  background: var(--umn-hover-underline-color);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--umn-duration) var(--umn-ease);
+}
+.umn-hover-underline:hover::before {
+  transform: scaleX(1);
+}
+
+/* umn-hover-underline-center — 下線が中央から左右に広がる */
+.umn-hover-underline-center {
+  position: relative;
+}
+.umn-hover-underline-center::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.15em;
+  width: 100%;
+  height: 1px;
+  background: var(--umn-hover-underline-color);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform var(--umn-duration) var(--umn-ease);
+}
+.umn-hover-underline-center:hover::before {
+  transform: scaleX(1);
+}
+
+/* umn-hover-underline-thick — 下線の太さ・余白がhoverで変化 */
+.umn-hover-underline-thick {
+  text-decoration-line: underline;
+  text-decoration-color: var(--umn-hover-underline-color);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+  transition: text-decoration-thickness var(--umn-duration) var(--umn-ease),
+    text-underline-offset var(--umn-duration) var(--umn-ease);
+}
+.umn-hover-underline-thick:hover {
+  text-decoration-thickness: 3px;
+  text-underline-offset: 0.25em;
+}
+
+/* umn-hover-underline-sweep — 下線がグラデーションで色替えしながら現れる */
+.umn-hover-underline-sweep {
+  position: relative;
+}
+.umn-hover-underline-sweep::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.15em;
+  width: 100%;
+  height: 1px;
+  opacity: 0;
+  background: linear-gradient(90deg, var(--umn-hover-underline-color), var(--umn-hover-underline-sweep-color));
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  transition: opacity var(--umn-duration) var(--umn-ease), background-position var(--umn-duration) var(--umn-ease);
+}
+.umn-hover-underline-sweep:hover::before {
+  opacity: 1;
+  background-position: 0 0;
+}
+
+/* umn-hover-text-color — 文字色のみがhoverで変化（背景・枠線は不変） */
+.umn-hover-text-color {
+  transition: color var(--umn-duration) var(--umn-ease);
+}
+.umn-hover-text-color:hover {
+  color: var(--umn-hover-text-color);
+}
+
+/* umn-hover-tracking — hoverで字間が開く */
+.umn-hover-tracking {
+  transition: letter-spacing var(--umn-duration) var(--umn-ease);
+}
+.umn-hover-tracking:hover {
+  letter-spacing: var(--umn-hover-tracking);
+}
+
+/* umn-hover-strike — 打ち消し線が左から右へ描画される */
+.umn-hover-strike {
+  position: relative;
+}
+.umn-hover-strike::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 1px;
+  background: var(--umn-hover-underline-color);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--umn-duration) var(--umn-ease);
+}
+.umn-hover-strike:hover::before {
+  transform: scaleX(1);
+}
+
+/* umn-hover-arrow — 末尾に矢印を自動付与し、hoverで右へ動かす */
+.umn-hover-arrow::after {
+  content: "→";
+  display: inline-block;
+  margin-left: 0.35em;
+  transition: transform var(--umn-duration) var(--umn-ease);
+}
+.umn-hover-arrow:hover::after {
+  transform: translateX(var(--umn-hover-arrow-distance));
+}
+
+/* umn-hover-arrow-in — 矢印が隠れた状態からhoverで出現する */
+.umn-hover-arrow-in::after {
+  content: "→";
+  display: inline-block;
+  margin-left: 0.35em;
+  opacity: 0;
+  transform: translateX(calc(var(--umn-hover-arrow-distance) * -1));
+  transition: opacity var(--umn-duration) var(--umn-ease), transform var(--umn-duration) var(--umn-ease);
+}
+.umn-hover-arrow-in:hover::after {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* umn-hover-arrow-rotate — 末尾のアイコンがhoverで45度回転する（外部リンク等） */
+.umn-hover-arrow-rotate::after {
+  content: "↗";
+  display: inline-block;
+  margin-left: 0.35em;
+  transition: transform var(--umn-duration) var(--umn-ease);
+}
+.umn-hover-arrow-rotate:hover::after {
+  transform: rotate(45deg);
+}
+
+/* umn-hover-bracket — テキスト前後に括弧がhoverで出現する */
+.umn-hover-bracket::before {
+  content: "[ ";
+  display: inline-block;
+  opacity: 0;
+  transform: translateX(0.4em);
+  transition: opacity var(--umn-duration) var(--umn-ease), transform var(--umn-duration) var(--umn-ease);
+}
+.umn-hover-bracket::after {
+  content: " ]";
+  display: inline-block;
+  opacity: 0;
+  transform: translateX(-0.4em);
+  transition: opacity var(--umn-duration) var(--umn-ease), transform var(--umn-duration) var(--umn-ease);
+}
+.umn-hover-bracket:hover::before,
+.umn-hover-bracket:hover::after {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* umn-hover-nav-highlight — 背景ハイライトが左から広がる */
+.umn-hover-nav-highlight {
+  position: relative;
+  z-index: 0;
+}
+.umn-hover-nav-highlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, currentColor 10%, transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--umn-duration) var(--umn-ease);
+  z-index: -1;
+}
+.umn-hover-nav-highlight:hover::before {
+  transform: scaleX(1);
+}
+
+/* umn-hover-bounce — hoverで一度だけ弾む */
+@keyframes umn-hover-bounce-kf {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(var(--umn-hover-bounce-distance)); }
+}
+.umn-hover-bounce:hover {
+  animation: umn-hover-bounce-kf 0.5s ease;
+}
+
+/* umn-hover-push — hoverでわずかに押し出されつつ薄くなる */
+.umn-hover-push {
+  transition: transform var(--umn-duration) var(--umn-ease), opacity var(--umn-duration) var(--umn-ease);
+}
+.umn-hover-push:hover {
+  transform: translateX(var(--umn-hover-push-distance));
+  opacity: var(--umn-hover-opacity);
+}
+
+/* umn-hover-fill — hoverで背景が塗りつぶされる（currentColorではなくCanvasText基準。hover中にcolorが変化しても塗りつぶし色が引きずられない） */
+.umn-hover-fill {
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+}
+.umn-hover-fill::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--umn-hover-fill-color);
+  transform: translateX(-100%);
+  transition: transform var(--umn-duration) var(--umn-ease);
+}
+.umn-hover-fill:hover::before {
+  transform: translateX(0);
+}
+
+/* umn-hover-invert — hoverで色が反転する */
+.umn-hover-invert {
+  transition: filter var(--umn-duration) var(--umn-ease);
+}
+.umn-hover-invert:hover {
+  filter: invert(1);
+}
+
+/* umn-hover-frame — hoverで内枠がcurrentColorで太くなる */
+.umn-hover-frame {
+  box-shadow: inset 0 0 0 0 currentColor;
+  transition: box-shadow var(--umn-duration) var(--umn-ease);
+}
+.umn-hover-frame:hover {
+  box-shadow: inset 0 0 0 var(--umn-hover-frame-width) currentColor;
+}
+
+/* umn-hover-outline — hoverでoutlineが浮き上がるように広がる */
+.umn-hover-outline {
+  outline: 1px solid transparent;
+  outline-offset: 0;
+  transition: outline-color var(--umn-duration) var(--umn-ease), outline-offset var(--umn-duration) var(--umn-ease);
+}
+.umn-hover-outline:hover {
+  outline-color: currentColor;
+  outline-offset: var(--umn-hover-outline-offset);
+}
+
+/* umn-hover-press — hoverで拡大、押下(active)で縮小する */
+.umn-hover-press {
+  transition: transform 0.18s var(--umn-ease);
+}
+.umn-hover-press:hover {
+  transform: scale(var(--umn-hover-press-scale));
+}
+.umn-hover-press:active {
+  transform: scale(var(--umn-hover-press-scale-active));
+}
+
+/* umn-hover-ring — hoverでfocus-ring風の柔らかい輪郭が広がる */
+.umn-hover-ring {
+  box-shadow: 0 0 0 0 color-mix(in srgb, currentColor 25%, transparent);
+  transition: box-shadow var(--umn-duration) var(--umn-ease);
+}
+.umn-hover-ring:hover {
+  box-shadow: 0 0 0 var(--umn-hover-ring-width) color-mix(in srgb, currentColor 25%, transparent);
+}
+
+/* umn-hover-scale — コンテナ全体がhoverでわずかに拡大する */
+.umn-hover-scale {
+  transition: transform var(--umn-duration) var(--umn-ease);
+}
+.umn-hover-scale:hover {
+  transform: scale(var(--umn-hover-scale));
+}
+
+/* umn-hover-overlay — hoverで暗いoverlayが現れる（画像以外のコンテナにも使用可） */
+.umn-hover-overlay {
+  position: relative;
+  overflow: hidden;
+}
+.umn-hover-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--umn-hover-overlay-color);
+  opacity: 0;
+  transition: opacity var(--umn-duration) var(--umn-ease);
+}
+.umn-hover-overlay:hover::after {
+  opacity: 1;
+}
+
+/* umn-hover-corner — hoverで左上のL字コーナーアクセントが現れる */
+.umn-hover-corner {
+  position: relative;
+}
+.umn-hover-corner::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: var(--umn-hover-corner-size);
+  height: var(--umn-hover-corner-size);
+  border-top: 2px solid currentColor;
+  border-left: 2px solid currentColor;
+  transform: scale(0);
+  transform-origin: top left;
+  transition: transform var(--umn-duration) var(--umn-ease);
+}
+.umn-hover-corner:hover::before {
+  transform: scale(1);
+}
+
+/* umn-hover-saturate — hoverで彩度・明度がわずかに上がる */
+.umn-hover-saturate {
+  transition: filter var(--umn-duration) var(--umn-ease);
+}
+.umn-hover-saturate:hover {
+  filter: saturate(1.35) brightness(1.04);
+}
+
+/* umn-hover-content-lift — コンテナ直下の最後の子要素のみがhoverで浮く */
+.umn-hover-content-lift > :last-child {
+  transition: transform var(--umn-duration) var(--umn-ease);
+}
+.umn-hover-content-lift:hover > :last-child {
+  transform: translateY(var(--umn-hover-content-lift-distance));
+}
+
+/* umn-hover-reveal — コンテナ直下の最後の子要素がhoverでスライドインしながら現れる */
+.umn-hover-reveal > :last-child {
+  opacity: 0;
+  transform: translateY(var(--umn-hover-reveal-distance));
+  transition: opacity var(--umn-duration) var(--umn-ease), transform var(--umn-duration) var(--umn-ease);
+}
+.umn-hover-reveal:hover > :last-child {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================
+   umn-scroll-* — スクロール誘導インジケーター
+   常時ループする CSS only effect（JS不要・Observer不使用）
+   配置（position指定等）は利用側の責務。形状と動きのみ提供する
+   ============================================ */
+
+/* umn-scroll-mouse — マウス型の枠内でドットが上下にループする */
+.umn-scroll-mouse {
+  display: inline-block;
+  width: var(--umn-scroll-size);
+  height: calc(var(--umn-scroll-size) * 1.6);
+  border: 2px solid var(--umn-scroll-color);
+  border-radius: 100px;
+  position: relative;
+}
+.umn-scroll-mouse::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  width: 4px;
+  height: 8px;
+  background: var(--umn-scroll-color);
+  border-radius: 2px;
+  transform: translateX(-50%);
+  animation: umn-scroll-mouse-kf var(--umn-scroll-duration) ease infinite;
+}
+@keyframes umn-scroll-mouse-kf {
+  0% { opacity: 0; transform: translate(-50%, 0); }
+  30% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, 14px); }
+}
+
+/* umn-scroll-chevron — V字の矢印が下方向へ流れる */
+.umn-scroll-chevron {
+  display: inline-block;
+  width: var(--umn-scroll-size);
+  height: var(--umn-scroll-size);
+  position: relative;
+}
+.umn-scroll-chevron::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-right: 2px solid var(--umn-scroll-color);
+  border-bottom: 2px solid var(--umn-scroll-color);
+  transform: rotate(45deg);
+  animation: umn-scroll-chevron-kf var(--umn-scroll-duration) ease infinite;
+}
+@keyframes umn-scroll-chevron-kf {
+  0% { opacity: 0; transform: translateY(0) rotate(45deg); }
+  40% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(var(--umn-scroll-size)) rotate(45deg); }
+}
+
+/* umn-scroll-line — 縦ラインの中を短いセグメントが流れる */
+.umn-scroll-line {
+  display: inline-block;
+  width: 1px;
+  height: var(--umn-scroll-size);
+  background-image:
+    linear-gradient(var(--umn-scroll-color), var(--umn-scroll-color)),
+    linear-gradient(color-mix(in srgb, var(--umn-scroll-color) 25%, transparent), color-mix(in srgb, var(--umn-scroll-color) 25%, transparent));
+  background-repeat: no-repeat;
+  background-size: 100% 35%, 100% 100%;
+  background-position: 0 30%, 0 0;
+  animation: umn-scroll-line-kf var(--umn-scroll-duration) ease infinite;
+}
+@keyframes umn-scroll-line-kf {
+  0% { background-position: 0 -35%, 0 0; }
+  100% { background-position: 0 135%, 0 0; }
+}
+
+/* umn-scroll-text — テキスト + 下の縦ラインが流れる（テキストは要素の中身として記述する） */
+.umn-scroll-text {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--umn-scroll-color);
+}
+.umn-scroll-text::after {
+  content: "";
+  display: block;
+  width: 1px;
+  height: var(--umn-scroll-size);
+  background-image:
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(color-mix(in srgb, currentColor 25%, transparent), color-mix(in srgb, currentColor 25%, transparent));
+  background-repeat: no-repeat;
+  background-size: 100% 35%, 100% 100%;
+  background-position: 0 30%, 0 0;
+  animation: umn-scroll-line-kf var(--umn-scroll-duration) ease infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .umn-hover-underline::before,
+  .umn-hover-underline-center::before,
+  .umn-hover-underline-thick,
+  .umn-hover-underline-sweep::before,
+  .umn-hover-text-color,
+  .umn-hover-tracking,
+  .umn-hover-strike::before,
+  .umn-hover-arrow::after,
+  .umn-hover-arrow-in::after,
+  .umn-hover-arrow-rotate::after,
+  .umn-hover-bracket::before,
+  .umn-hover-bracket::after,
+  .umn-hover-nav-highlight::before,
+  .umn-hover-bounce:hover,
+  .umn-hover-push,
+  .umn-hover-fill::before,
+  .umn-hover-invert,
+  .umn-hover-frame,
+  .umn-hover-outline,
+  .umn-hover-press,
+  .umn-hover-ring,
+  .umn-hover-scale,
+  .umn-hover-overlay::after,
+  .umn-hover-corner::before,
+  .umn-hover-saturate,
+  .umn-hover-content-lift > :last-child,
+  .umn-hover-reveal > :last-child,
+  .umn-scroll-mouse::before,
+  .umn-scroll-chevron::before,
+  .umn-scroll-line,
+  .umn-scroll-text::after {
+    transition: none;
+    animation: none;
+  }
+}

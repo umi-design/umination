@@ -11,4 +11,25 @@
   --umn-hover-border-color: currentColor;
   --umn-hover-tilt-deg: -2deg;
   --umn-hover-opacity: 0.7;
+  --umn-hover-underline-color: currentColor;
+  --umn-hover-underline-sweep-color: currentColor;
+  --umn-hover-fill-color: CanvasText;
+  --umn-hover-text-color: color-mix(in srgb, currentColor 55%, transparent);
+  --umn-hover-tracking: 0.08em;
+  --umn-hover-scale: 1.03;
+  --umn-hover-press-scale: 1.04;
+  --umn-hover-press-scale-active: 0.96;
+  --umn-hover-outline-offset: 4px;
+  --umn-hover-ring-width: 4px;
+  --umn-hover-frame-width: 2px;
+  --umn-hover-overlay-color: rgba(0, 0, 0, 0.35);
+  --umn-hover-corner-size: 16px;
+  --umn-hover-content-lift-distance: -4px;
+  --umn-hover-reveal-distance: 12px;
+  --umn-hover-push-distance: 4px;
+  --umn-hover-bounce-distance: -6px;
+  --umn-hover-arrow-distance: 4px;
+  --umn-scroll-color: currentColor;
+  --umn-scroll-duration: 1.6s;
+  --umn-scroll-size: 26px;
 }

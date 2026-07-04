@@ -235,6 +235,7 @@
       font-size: 0.78rem; color: var(--ink-muted);
     }
     .doc-card.is-hover { border-color: var(--border-strong); cursor: default; }
+.doc-card .umn-hover-fill:hover { color: var(--paper); }
     .class-name {
       display: block;
       color: var(--accent); font-family: monospace;
@@ -349,11 +350,12 @@
       <a href="#getting-started" data-target="getting-started"><span class="num">01</span>Getting Started</a>
       <a href="#reveal" data-target="reveal"><span class="num">02</span>Reveal Effects</a>
       <a href="#hover" data-target="hover"><span class="num">03</span>Hover Effects</a>
-      <a href="#stagger" data-target="stagger"><span class="num">04</span>Stagger</a>
-      <a href="#repeat" data-target="repeat"><span class="num">05</span>Repeat</a>
-      <a href="#utility" data-target="utility"><span class="num">06</span>Utility</a>
-      <a href="#variables" data-target="variables"><span class="num">07</span>CSS Variables</a>
-      <a href="#api" data-target="api"><span class="num">08</span>JS API</a>
+      <a href="#scroll-indicators" data-target="scroll-indicators"><span class="num">04</span>Scroll Indicators</a>
+      <a href="#stagger" data-target="stagger"><span class="num">05</span>Stagger</a>
+      <a href="#repeat" data-target="repeat"><span class="num">06</span>Repeat</a>
+      <a href="#utility" data-target="utility"><span class="num">07</span>Utility</a>
+      <a href="#variables" data-target="variables"><span class="num">08</span>CSS Variables</a>
+      <a href="#api" data-target="api"><span class="num">09</span>JS API</a>
     </nav>
     <div class="sidebar-foot">
       <span>MIT License</span>
@@ -528,13 +530,91 @@ initUmination();</code></pre>
   &lt;img src="photo.jpg" alt=""&gt;
 &lt;/div&gt;</code></pre>
         </div>
+
+        <p class="step-label" style="margin-top:28px;">text / line</p>
+        <div class="card-grid">
+          <div class="doc-card is-hover"><span class="class-name">umn-hover-underline</span><span class="umn-hover-underline">下線が伸びる</span></div>
+          <div class="doc-card is-hover"><span class="class-name">umn-hover-underline-center</span><span class="umn-hover-underline-center">中央から広がる</span></div>
+          <div class="doc-card is-hover"><span class="class-name">umn-hover-underline-thick</span><span class="umn-hover-underline-thick">太さ・余白が変化</span></div>
+          <div class="doc-card is-hover"><span class="class-name">umn-hover-underline-sweep</span><span class="umn-hover-underline-sweep">グラデーションで現れる</span></div>
+          <div class="doc-card is-hover"><span class="class-name">umn-hover-text-color</span><span class="umn-hover-text-color" style="color:var(--ink-faint)">文字色のみ変化</span></div>
+          <div class="doc-card is-hover"><span class="class-name">umn-hover-tracking</span><span class="umn-hover-tracking">字間が開く</span></div>
+          <div class="doc-card is-hover"><span class="class-name">umn-hover-strike</span><span class="umn-hover-strike">打ち消し線が伸びる</span></div>
+        </div>
+
+        <p class="step-label" style="margin-top:28px;">ボタン / 汎用コンテナ</p>
+        <div class="card-grid">
+          <div class="doc-card is-hover"><span class="class-name">umn-hover-fill</span><button class="btn umn-hover-fill">Button</button></div>
+          <div class="doc-card is-hover"><span class="class-name">umn-hover-invert</span><button class="btn umn-hover-invert">Button</button></div>
+          <div class="doc-card is-hover"><span class="class-name">umn-hover-frame</span><button class="btn umn-hover-frame">Button</button></div>
+          <div class="doc-card is-hover"><span class="class-name">umn-hover-outline</span><button class="btn umn-hover-outline">Button</button></div>
+          <div class="doc-card is-hover"><span class="class-name">umn-hover-press</span><button class="btn umn-hover-press">Button</button></div>
+          <div class="doc-card is-hover"><span class="class-name">umn-hover-ring</span><button class="btn umn-hover-ring">Button</button></div>
+          <div class="doc-card is-hover umn-hover-scale"><span class="class-name">umn-hover-scale</span>コンテナ全体が拡大</div>
+        </div>
+
+        <p class="step-label" style="margin-top:28px;">矢印・アイコン付与 / リンク・ナビ</p>
+        <div class="card-grid">
+          <div class="doc-card is-hover"><span class="class-name">umn-hover-arrow</span><a href="#" class="umn-hover-arrow" onclick="return false;">Read more</a></div>
+          <div class="doc-card is-hover"><span class="class-name">umn-hover-arrow-in</span><a href="#" class="umn-hover-arrow-in" onclick="return false;">Read more</a></div>
+          <div class="doc-card is-hover"><span class="class-name">umn-hover-arrow-rotate</span><a href="#" class="umn-hover-arrow-rotate" onclick="return false;">External</a></div>
+          <div class="doc-card is-hover"><span class="class-name">umn-hover-bracket</span><a href="#" class="umn-hover-bracket" onclick="return false;">Read more</a></div>
+          <div class="doc-card is-hover"><span class="class-name">umn-hover-nav-highlight</span><a href="#" class="umn-hover-nav-highlight" onclick="return false;" style="padding:4px 8px;">Nav item</a></div>
+          <div class="doc-card is-hover"><span class="class-name">umn-hover-bounce</span><a href="#" class="umn-hover-bounce" onclick="return false;">Scroll ↓</a></div>
+          <div class="doc-card is-hover"><span class="class-name">umn-hover-push</span><a href="#" class="umn-hover-push" onclick="return false;">Read more</a></div>
+        </div>
+
+        <p class="step-label" style="margin-top:28px;">カード / コンテナ</p>
+        <div class="card-grid">
+          <div class="doc-card is-hover umn-hover-overlay" style="position:relative;"><span class="class-name">umn-hover-overlay</span>Card title</div>
+          <div class="doc-card is-hover umn-hover-corner"><span class="class-name">umn-hover-corner</span>Card title</div>
+          <div class="doc-card is-hover umn-hover-saturate" style="background:linear-gradient(135deg,#e4e0d6,#cfc9ba);"><span class="class-name">umn-hover-saturate</span>Card title</div>
+          <div class="doc-card is-hover umn-hover-content-lift"><span class="class-name">umn-hover-content-lift</span><div>最後の子要素が浮く</div></div>
+          <div class="doc-card is-hover umn-hover-reveal" style="overflow:hidden;"><span class="class-name">umn-hover-reveal</span><div>最後の子要素が現れる</div></div>
+        </div>
       </section>
 
-      <!-- 04 Stagger -->
+      <!-- 04 Scroll Indicators -->
+      <section id="scroll-indicators">
+        <div class="section-header-row">
+          <div>
+            <div class="section-label">04 / CSS only・JS 不要</div>
+            <div class="section-title">Scroll Indicators</div>
+          </div>
+        </div>
+        <p class="section-lead">常時ループするスクロール誘導インジケーター。IntersectionObserver も :hover も使わない、純粋な animation ループ。配置は利用側の責務。</p>
+        <div class="card-grid">
+          <div class="doc-card is-hover" style="display:flex; flex-direction:column; align-items:center; gap:12px; padding:28px 15px;">
+            <span class="class-name">umn-scroll-mouse</span>
+            <div class="umn-scroll-mouse"></div>
+          </div>
+          <div class="doc-card is-hover" style="display:flex; flex-direction:column; align-items:center; gap:12px; padding:28px 15px;">
+            <span class="class-name">umn-scroll-chevron</span>
+            <div class="umn-scroll-chevron"></div>
+          </div>
+          <div class="doc-card is-hover" style="display:flex; flex-direction:column; align-items:center; gap:12px; padding:28px 15px;">
+            <span class="class-name">umn-scroll-line</span>
+            <div class="umn-scroll-line"></div>
+          </div>
+          <div class="doc-card is-hover" style="display:flex; flex-direction:column; align-items:center; gap:12px; padding:28px 15px;">
+            <span class="class-name">umn-scroll-text</span>
+            <div class="umn-scroll-text">Scroll</div>
+          </div>
+        </div>
+        <div class="code-block" style="margin-top:16px;">
+          <div class="code-block-header">
+            <span>HTML</span>
+            <button class="copy-btn" data-copy='&lt;div class="umn-scroll-mouse" style="position: fixed; bottom: 32px; left: 50%;"&gt;&lt;/div&gt;'>Copy</button>
+          </div>
+          <pre><code>&lt;div class="umn-scroll-mouse" style="position: fixed; bottom: 32px; left: 50%;"&gt;&lt;/div&gt;</code></pre>
+        </div>
+      </section>
+
+      <!-- 05 Stagger -->
       <section id="stagger">
         <div class="section-header-row">
           <div>
-            <div class="section-label">04 / umn-stagger</div>
+            <div class="section-label">05 / umn-stagger</div>
             <div class="section-title">Stagger</div>
           </div>
           <button class="btn" onclick="replaySection('stagger')">↺ Replay</button>
@@ -568,7 +648,7 @@ initUmination();</code></pre>
       <section id="repeat">
         <div class="section-header-row">
           <div>
-            <div class="section-label">05 / umn-repeat</div>
+            <div class="section-label">06 / umn-repeat</div>
             <div class="section-title">Repeat</div>
           </div>
         </div>
@@ -594,7 +674,7 @@ initUmination();</code></pre>
       <section id="utility">
         <div class="section-header-row">
           <div>
-            <div class="section-label">06 / Utility</div>
+            <div class="section-label">07 / Utility</div>
             <div class="section-title">Delay / Duration / Ease</div>
           </div>
           <button class="btn" onclick="replaySection('utility')">↺ Replay</button>
@@ -659,7 +739,7 @@ initUmination();</code></pre>
       <section id="variables">
         <div class="section-header-row">
           <div>
-            <div class="section-label">07 / CSS Variables</div>
+            <div class="section-label">08 / CSS Variables</div>
             <div class="section-title">style 属性で個別カスタマイズ</div>
           </div>
           <button class="btn" onclick="replaySection('variables')">↺ Replay</button>
@@ -719,7 +799,7 @@ initUmination();</code></pre>
       <section id="api">
         <div class="section-header-row">
           <div>
-            <div class="section-label">08 / window.Umination</div>
+            <div class="section-label">09 / window.Umination</div>
             <div class="section-title">JS API</div>
           </div>
         </div>
