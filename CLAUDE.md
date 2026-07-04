@@ -42,6 +42,8 @@ html.umn-ready .umn-slide-up { opacity: 0; }
 
 hover 系は `:hover` のみで完結する CSS only effect（`umn-img-zoom` / `umn-hover-lift` / `umn-hover-border` / `umn-hover-tilt` / `umn-hover-fade`）に限り例外として許可。IntersectionObserver・JS 側の状態管理を伴う hover 系は追加しない。MutationObserver による動的要素検知は `init()` 時にデフォルトで有効（`src/ts/mutation-watcher.ts`）。監視範囲は `document.body` 全体固定で、opt-inセレクタ方式は追加しない。
 
+text reveal（行分割・単語分割による文字送り演出）は原則追加しない。ただし `umn-typing`（タイプライター）に限り、JS による char 分割・専用 IntersectionObserver・カーソル駆動を例外として許可する（`src/ts/typing.ts`）。
+
 ## 変更時の注意
 
 - 既存 class 名を不用意に変更しない（破壊的変更になる）
@@ -63,7 +65,8 @@ src/
 │  ├─ inject-style.ts    CSS 文字列を <style data-umination> として head に注入（重複注入防止）
 │  ├─ stagger.ts         applyStagger() — umn-stagger 配下の直下子要素に自動delay付番
 │  ├─ mutation-watcher.ts MutationObserverのdebounceラッパー（initMutationWatcher/destroyMutationWatcher）
-│  └─ observer.ts        IntersectionObserver 管理（init/refresh/destroy、umn-repeatの分岐を含む）
+│  ├─ observer.ts        IntersectionObserver 管理（init/refresh/destroy、umn-repeatの分岐を含む）
+│  └─ typing.ts          umn-typing の char分割・タイピングアニメーション・専用IntersectionObserver管理（initTyping/refreshTyping/destroyTyping）
 └─ index.ts           エントリ（CSS注入 + 自動init + window.Umination 公開）
 ```
 
@@ -74,9 +77,11 @@ src/
 1. `index.css` を `?inline` で文字列 import（JSバンドルに同梱するため）と副作用 import（Vite が `dist/umination.css` を別途出力するため）の二重 import をしている
 2. `DOMContentLoaded`（または既に読み込み済みなら即時）で `initUmination()` を自動実行
 3. `initUmination()` → `injectStyle()` で CSS を head に注入 → `initObserver()` で `html` に `umn-ready` を付与し、`UMINATION_EFFECT_CLASSES` に該当する要素を `IntersectionObserver` で監視開始
-4. 交差したら `is-visible` を付与して即 `unobserve`（一度表示したら監視終了、`once` 相当の動作がデフォルト）。ただし `umn-repeat` class を持つ要素は `unobserve` せず監視を継続し、`isIntersecting` に応じて `is-visible` をトグルする（`src/ts/observer.ts` の `onIntersect()` 内で分岐）
-5. `window.Umination.refresh()` は動的に追加された要素を再スキャンして未観測分のみ observe に追加（`WeakSet` で観測済みを管理）
-6. `window.Umination.destroy()` は observer を disconnect するのみ。`is-visible` が付いた要素のクラスは剥がさない
+4. 続けて `initTyping()` で `umn-typing` 要素を専用の `IntersectionObserver`（is-visible系とは分離）で監視開始。交差したら char 分割 + `requestAnimationFrame` でのタイピングを開始し、即 `unobserve`
+5. `initUmination()` の最後に `initMutationWatcher(refreshAll)` を呼び、`document.body` 配下の動的要素追加を検知するたびに `refreshObserver()` と `refreshTyping()` の両方を実行する（`src/index.ts` が両 observer の refresh を束ねる）
+6. 交差したら `is-visible` を付与して即 `unobserve`（一度表示したら監視終了、`once` 相当の動作がデフォルト）。ただし `umn-repeat` class を持つ要素は `unobserve` せず監視を継続し、`isIntersecting` に応じて `is-visible` をトグルする（`src/ts/observer.ts` の `onIntersect()` 内で分岐）
+7. `window.Umination.refresh()` は動的に追加された要素を再スキャンして未観測分のみ observe に追加（`WeakSet` で観測済みを管理）。typing 側も同様に未処理の `umn-typing` 要素のみ observe に追加する
+8. `window.Umination.destroy()` は mutation watcher と両方の observer を disconnect するのみ。`is-visible` / `is-typed` が付いた要素のクラスは剥がさない
 
 ### ビルド構成（vite.config.ts）
 

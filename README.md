@@ -146,6 +146,44 @@ CSS も自動注入される。別途 `<link>` は不要。
 
 `umn-hover-fill` の塗りつぶし色（デフォルト `CanvasText`）は `--umn-hover-fill-color` で上書きできる。hover 時のテキストの可読性（コントラスト）は利用側で調整する必要がある（例: `:hover` で `color` を明示的に指定する）。
 
+### Typing（JS 駆動）
+
+スクロールで画面に入ると1文字ずつタイプされる。複数行に対応し、タイプ中のみカーソルが点滅する（完了後は消える）。
+
+```html
+<h2 class="umn-typing">1文字ずつ
+タイプされる見出し</h2>
+```
+
+速度は `--umn-typing-speed`（ms/char、デフォルト `45ms`）で調整できる。プリセット utility も用意している。
+
+| class | 値 |
+|---|---|
+| `umn-typing-fast` | `25ms` |
+| `umn-typing-slow` | `80ms` |
+
+HTML ソース上の実改行は `<br>` として扱われ、複数行のタイピングになる。
+
+### Parallax（CSS scroll-driven・JS不要）
+
+`animation-timeline: view()` によるスクロール連動の視差。JS には一切依存しない。未対応ブラウザ（対応状況はブラウザにより異なる）では通常表示（視差なし）に degrade する。
+
+```html
+<img class="umn-parallax" src="/image.jpg" alt="">
+<div class="umn-parallax umn-parallax-left umn-parallax-fast">...</div>
+```
+
+| class | 動作 |
+|---|---|
+| `umn-parallax` | 視差の基点。方向は上（up）がデフォルト |
+| `umn-parallax-down` | 下方向へ視差移動 |
+| `umn-parallax-left` | 左方向へ視差移動 |
+| `umn-parallax-right` | 右方向へ視差移動 |
+| `umn-parallax-slow` | 移動量を抑える（`--umn-parallax-speed: 0.08`） |
+| `umn-parallax-fast` | 移動量を大きくする（`--umn-parallax-speed: 0.3`） |
+
+速度は `--umn-parallax-speed`（デフォルト `0.15`）を直接指定することもできる。視差移動で要素が親要素の外にはみ出す場合、親に `overflow: hidden` 等を設定するのは利用側の責務。
+
 ## Stagger
 
 親要素に `umn-stagger` class を付けると、直下の子要素（effect class を持つもの）に自動で連番の delay が付与される。
@@ -259,6 +297,8 @@ CSS も自動注入される。別途 `<link>` は不要。
   --umn-scroll-color: currentColor;
   --umn-scroll-duration: 1.6s;
   --umn-scroll-size: 26px;
+  --umn-typing-speed: 45ms;
+  --umn-parallax-speed: 0.15;
 }
 ```
 
@@ -314,4 +354,6 @@ import { initUmination, refreshUmination, destroyUmination, UMINATION_EFFECT_CLA
 - GSAP 非依存
 - reset / layout / color / typography は含まない
 - アニメーション・transition・motion 関連のみ
-- text reveal・clip-path 系は含まない（hover 系は `:hover` のみで完結する CSS only effect、スクロール誘導系は常時ループする CSS only effect に限り対応済み。上記「hover 系」「スクロール誘導系」参照）
+- clip-path 系は含まない（hover 系は `:hover` のみで完結する CSS only effect、スクロール誘導系は常時ループする CSS only effect に限り対応済み。上記「hover 系」「スクロール誘導系」参照）
+- text reveal は行分割・単語分割のものは含まない。`umn-typing`（タイプライター）に限り JS 駆動の char 分割を例外として対応済み（上記「Typing」参照）
+- parallax は `umn-parallax` として CSS scroll-driven 視差を対応済み（上記「Parallax」参照）
