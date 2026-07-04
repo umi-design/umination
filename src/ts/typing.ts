@@ -3,6 +3,7 @@ import {
   UMINATION_TYPING_CHAR_CLASS,
   UMINATION_TYPING_CURSOR_CLASS,
   UMINATION_TYPING_TYPED_CLASS,
+  TYPING_OBSERVER_OPTIONS,
 } from './constants.js'
 
 export function splitIntoChars(el: HTMLElement): HTMLElement[] {
@@ -70,4 +71,52 @@ export function typeElement(el: HTMLElement, chars: HTMLElement[], cursor: HTMLE
   }
 
   requestAnimationFrame(step)
+}
+
+let observer: IntersectionObserver | null = null
+let initialized = false
+const processedElements = new WeakSet<Element>()
+
+function onIntersect(entries: IntersectionObserverEntry[]): void {
+  for (const entry of entries) {
+    if (!entry.isIntersecting) continue
+    const el = entry.target as HTMLElement
+    observer?.unobserve(el)
+
+    const chars = splitIntoChars(el)
+    const cursor = createCursor()
+    typeElement(el, chars, cursor)
+  }
+}
+
+function createObserver(): IntersectionObserver {
+  return new IntersectionObserver(onIntersect, TYPING_OBSERVER_OPTIONS)
+}
+
+function observeNewElements(): void {
+  const elements = document.querySelectorAll<HTMLElement>(getSelector())
+  elements.forEach((el) => {
+    if (processedElements.has(el)) return
+    processedElements.add(el)
+    observer!.observe(el)
+  })
+}
+
+export function initTyping(): void {
+  if (initialized) return
+  initialized = true
+
+  observer = createObserver()
+  observeNewElements()
+}
+
+export function refreshTyping(): void {
+  if (!observer) return
+  observeNewElements()
+}
+
+export function destroyTyping(): void {
+  observer?.disconnect()
+  observer = null
+  initialized = false
 }
