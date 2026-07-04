@@ -6,8 +6,9 @@ import {
   TYPING_OBSERVER_OPTIONS,
 } from './constants.js'
 
-export function splitIntoChars(el: HTMLElement): HTMLElement[] {
+function splitIntoChars(el: HTMLElement): HTMLElement[] {
   const text = el.textContent ?? ''
+  el.setAttribute('aria-label', text.replace(/\n/g, ' '))
   el.textContent = ''
   const chars: HTMLElement[] = []
 
@@ -26,11 +27,11 @@ export function splitIntoChars(el: HTMLElement): HTMLElement[] {
   return chars
 }
 
-export function getSelector(): string {
+function getSelector(): string {
   return `.${UMINATION_TYPING_CLASS}`
 }
 
-export function createCursor(): HTMLElement {
+function createCursor(): HTMLElement {
   const cursor = document.createElement('span')
   cursor.className = UMINATION_TYPING_CURSOR_CLASS
   cursor.setAttribute('aria-hidden', 'true')
@@ -43,7 +44,7 @@ function getTypingSpeed(el: HTMLElement): number {
   return Number.isFinite(parsed) && parsed > 0 ? parsed : 45
 }
 
-export function typeElement(el: HTMLElement, chars: HTMLElement[], cursor: HTMLElement): void {
+function typeElement(el: HTMLElement, chars: HTMLElement[], cursor: HTMLElement): void {
   if (chars.length === 0) return
 
   el.insertBefore(cursor, chars[0])
