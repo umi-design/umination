@@ -7,43 +7,62 @@
   <script type="module" src="dist/umination.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,440;9..144,560;9..144,640&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --paper: #fafaf7;
-      --card: #ffffff;
-      --ink: #1a1a17;
-      --ink-muted: #7a766c;
-      --ink-faint: #b3ada0;
-      --accent: #b5432f;
-      --accent-soft: rgba(181, 67, 47, 0.08);
-      --border: rgba(26, 26, 23, 0.1);
-      --border-strong: rgba(26, 26, 23, 0.18);
-      --success: #4b7a5b;
-      --sidebar-w: 236px;
-      --content-w: 660px;
+      /* shadcn/ui neutral (light) — 変数名は互換のため維持し値のみ差し替え */
+      --paper: #ffffff;                 /* background */
+      --card: #ffffff;                  /* card */
+      --ink: #0a0a0a;                   /* foreground */
+      --ink-muted: #737373;             /* muted-foreground */
+      --ink-faint: #a3a3a3;             /* neutral-400 */
+      --accent: #171717;                /* primary (near-black) */
+      --accent-soft: #f5f5f5;           /* muted */
+      --border: #e5e5e5;                /* border */
+      --border-strong: #d4d4d4;         /* input / strong border */
+      --success: #16a34a;               /* copied フィードバック */
+
+      --radius: 0.5rem;                 /* 8px — buttons / inputs / code */
+      --radius-lg: 0.75rem;             /* 12px — cards */
+
+      /* docs 風ダークコードブロック（zinc スケール） */
+      --code-bg: #09090b;               /* zinc-950 */
+      --code-fg: #fafafa;               /* zinc-50 */
+      --code-muted: #a1a1aa;            /* zinc-400 */
+      --code-border: #27272a;           /* zinc-800 */
+      --code-hover: #1c1c1f;            /* header/copy hover */
+      /* 軽い構文色分け */
+      --code-tag: #7dd3fc;              /* sky-300 */
+      --code-attr: #d8b4fe;             /* purple-300 */
+      --code-string: #86efac;           /* green-300 */
+      --code-comment: #71717a;          /* zinc-500 */
+
+      --sidebar-w: 248px;
+      --content-w: 680px;
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', system-ui, sans-serif;
+      font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', system-ui, sans-serif;
       background: var(--paper);
       color: var(--ink);
-      line-height: 1.7;
+      line-height: 1.65;
       font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
 
     h1, h2, h3 {
-      font-family: 'Fraunces', serif;
-      font-weight: 560;
-      letter-spacing: -0.01em;
+      font-family: inherit;
+      font-weight: 600;
+      letter-spacing: -0.02em;
       color: var(--ink);
     }
 
-    code, pre, .mono { font-family: 'SF Mono', 'Menlo', 'Monaco', monospace; }
+    code, pre, .mono { font-family: 'Geist Mono', 'SF Mono', 'Menlo', 'Monaco', monospace; }
 
     a { color: inherit; }
 
@@ -51,7 +70,7 @@
     .skip-link {
       position: absolute; left: -9999px; top: 0;
       background: var(--ink); color: var(--paper);
-      padding: 10px 16px; z-index: 300;
+      padding: 10px 16px; border-radius: var(--radius); z-index: 300;
     }
     .skip-link:focus { left: 12px; top: 12px; }
 
@@ -59,25 +78,27 @@
     .nav-toggle {
       display: none;
       position: fixed; top: 16px; right: 16px; z-index: 210;
-      width: 42px; height: 42px;
+      width: 40px; height: 40px;
       background: var(--card);
-      border: 1px solid var(--border-strong);
-      border-radius: 8px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
       cursor: pointer;
     }
+    .nav-toggle:hover { background: var(--accent-soft); }
     .nav-toggle span {
-      display: block; width: 16px; height: 1px;
+      display: block; width: 16px; height: 1.5px; border-radius: 2px;
       background: var(--ink); margin: 3px auto;
       transition: transform 0.2s ease, opacity 0.2s ease;
     }
-    .nav-toggle.is-open span:nth-child(1) { transform: translateY(4px) rotate(45deg); }
+    .nav-toggle.is-open span:nth-child(1) { transform: translateY(4.5px) rotate(45deg); }
     .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
-    .nav-toggle.is-open span:nth-child(3) { transform: translateY(-4px) rotate(-45deg); }
+    .nav-toggle.is-open span:nth-child(3) { transform: translateY(-4.5px) rotate(-45deg); }
 
     .nav-scrim {
       display: none;
       position: fixed; inset: 0;
-      background: rgba(26, 26, 23, 0.25);
+      background: rgba(9, 9, 11, 0.4);
       z-index: 190;
     }
     .nav-scrim.is-open { display: block; }
@@ -92,51 +113,50 @@
       top: 0;
       height: 100vh;
       overflow-y: auto;
-      padding: 44px 28px;
+      padding: 32px 20px;
       border-right: 1px solid var(--border);
     }
     .sidebar-logo {
-      font-family: 'Fraunces', serif;
-      font-size: 1.15rem;
-      font-weight: 640;
+      font-size: 1.05rem;
+      font-weight: 600;
       letter-spacing: -0.02em;
+      padding: 0 12px;
       margin-bottom: 4px;
     }
     .sidebar-logo em {
       display: block; font-style: normal;
-      font-family: monospace; font-size: 0.68rem;
-      color: var(--ink-faint); letter-spacing: 0.03em;
-      margin-top: 4px;
+      font-family: 'Geist Mono', monospace; font-size: 0.68rem;
+      color: var(--ink-faint); letter-spacing: 0;
+      margin-top: 6px;
     }
-    .sidebar nav { margin-top: 40px; }
+    .sidebar nav { margin-top: 28px; display: flex; flex-direction: column; gap: 1px; }
     .sidebar nav a {
-      display: flex; align-items: baseline; gap: 10px;
+      display: flex; align-items: center; gap: 9px;
       text-decoration: none;
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.09em;
+      font-size: 0.82rem;
       color: var(--ink-muted);
-      padding: 7px 0;
-      border-left: 2px solid transparent;
-      padding-left: 12px;
-      margin-left: -14px;
-      transition: color 0.15s ease, border-color 0.15s ease;
+      padding: 7px 12px;
+      border-radius: var(--radius);
+      transition: color 0.15s ease, background-color 0.15s ease;
     }
     .sidebar nav a .num {
-      font-family: monospace; font-size: 0.66rem;
-      color: var(--ink-faint); letter-spacing: 0;
-    }
-    .sidebar nav a:hover { color: var(--ink); }
-    .sidebar nav a.is-active {
-      color: var(--accent);
-      border-left-color: var(--accent);
-    }
-    .sidebar nav a.is-active .num { color: var(--accent); }
-    .sidebar-foot {
-      margin-top: 40px;
-      font-size: 0.68rem;
+      font-family: 'Geist Mono', monospace; font-size: 0.68rem;
       color: var(--ink-faint);
-      display: flex; flex-direction: column; gap: 4px;
+      font-variant-numeric: tabular-nums;
+    }
+    .sidebar nav a:hover { color: var(--ink); background: var(--accent-soft); }
+    .sidebar nav a.is-active {
+      color: var(--ink);
+      font-weight: 500;
+      background: var(--accent-soft);
+    }
+    .sidebar nav a.is-active .num { color: var(--ink); }
+    .sidebar-foot {
+      margin-top: 32px;
+      padding: 0 12px;
+      font-size: 0.72rem;
+      color: var(--ink-faint);
+      display: flex; flex-direction: column; gap: 8px;
     }
 
     .content {
@@ -147,100 +167,135 @@
     .wrap { max-width: var(--content-w); }
 
     /* ---- Hero ---- */
-    .hero { padding: 56px 0 72px; }
+    .hero { padding: 48px 0 64px; }
     .hero-badge {
-      display: inline-flex; width: fit-content;
-      font-size: 0.7rem; font-family: monospace;
-      color: var(--accent); background: var(--accent-soft);
-      border: 1px solid rgba(181, 67, 47, 0.22);
+      display: inline-flex; align-items: center; width: fit-content;
+      font-size: 0.72rem; font-weight: 500;
+      color: var(--ink-muted); background: var(--accent-soft);
+      border: 1px solid var(--border);
       border-radius: 100px; padding: 4px 12px;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
     }
     .hero h1 {
-      font-size: clamp(2.6rem, 6vw, 3.6rem);
+      font-size: clamp(2.4rem, 6vw, 3.4rem);
       line-height: 1.05;
+      letter-spacing: -0.035em;
     }
     .hero p {
-      font-size: 1rem; color: var(--ink-muted);
-      margin-top: 16px; max-width: 46ch;
+      font-size: 1.05rem; color: var(--ink-muted);
+      margin-top: 18px; max-width: 48ch;
     }
 
-    /* ---- Code block ---- */
+    /* ---- Code block（shadcn docs 風ダーク） ---- */
     .code-block {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 8px; overflow: hidden;
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: var(--radius); overflow: hidden;
       margin: 12px 0;
     }
     .code-block-header {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 8px 16px;
-      border-bottom: 1px solid var(--border);
-      font-size: 0.68rem; color: var(--ink-muted);
-      font-family: monospace;
+      padding: 8px 12px 8px 16px;
+      border-bottom: 1px solid var(--code-border);
+      font-size: 0.72rem; color: var(--code-muted);
+      font-family: 'Geist Mono', monospace;
     }
     .code-block pre { padding: 16px 18px; overflow-x: auto; }
     .code-block code {
-      font-size: 0.8rem; line-height: 1.75;
-      color: #33322c;
+      font-size: 0.82rem; line-height: 1.7;
+      color: var(--code-fg);
     }
+    /* 構文色分け（表示のみ。コピーは data-copy を使うため非影響） */
+    .code-block .tok-tag { color: var(--code-tag); }
+    .code-block .tok-attr { color: var(--code-attr); }
+    .code-block .tok-str { color: var(--code-string); }
+    .code-block .tok-com { color: var(--code-comment); font-style: italic; }
     .copy-btn {
-      font-size: 0.66rem; padding: 3px 9px;
-      border-radius: 4px; border: 1px solid var(--border);
-      background: transparent; color: var(--ink-muted);
-      cursor: pointer; transition: color 0.15s, border-color 0.15s;
-      font-family: monospace;
+      font-size: 0.7rem; padding: 4px 10px;
+      border-radius: var(--radius); border: 1px solid transparent;
+      background: transparent; color: var(--code-muted);
+      cursor: pointer; transition: color 0.15s, background-color 0.15s;
+      font-family: 'Geist Mono', monospace;
     }
-    .copy-btn:hover { color: var(--ink); border-color: var(--border-strong); }
-    .copy-btn.copied { color: var(--success); border-color: var(--success); }
+    .copy-btn:hover { color: var(--code-fg); background: var(--code-hover); }
+    .copy-btn.copied { color: #4ade80; }
 
     /* ---- Section ---- */
     section {
-      padding: 72px 0;
+      padding: 64px 0;
       border-top: 1px solid var(--border);
       scroll-margin-top: 24px;
     }
     section:first-of-type { border-top: none; }
     .section-label {
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       color: var(--ink-faint);
-      font-family: monospace;
-      letter-spacing: 0.04em;
+      font-family: 'Geist Mono', monospace;
+      font-variant-numeric: tabular-nums;
     }
     .section-title {
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       margin-top: 6px;
+      letter-spacing: -0.025em;
     }
     .section-lead {
-      font-size: 0.85rem; color: var(--ink-muted);
-      margin-top: 10px; max-width: 52ch;
+      font-size: 0.9rem; color: var(--ink-muted);
+      margin-top: 10px; max-width: 56ch;
     }
     .step-label {
-      font-size: 0.74rem; color: var(--ink-muted);
-      margin: 22px 0 6px;
+      font-size: 0.82rem; color: var(--ink-muted);
+      margin: 24px 0 8px;
     }
     .step-label:first-child { margin-top: 0; }
 
     /* ---- Card grid（demo / hover 共通） ---- */
     .card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
       gap: 10px;
     }
     .doc-card {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 18px 15px;
-      font-size: 0.78rem; color: var(--ink-muted);
+      border-radius: var(--radius-lg);
+      padding: 18px 16px;
+      font-size: 0.82rem; color: var(--ink-muted);
+      transition: box-shadow 0.15s ease, border-color 0.15s ease;
     }
-    .doc-card.is-hover { border-color: var(--border-strong); cursor: default; }
-.doc-card .umn-hover-fill:hover { color: var(--paper); }
+    .doc-card.is-hover:hover {
+      border-color: var(--border-strong);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    }
+    .doc-card.is-hover { cursor: default; }
+    .doc-card .umn-hover-fill:hover { color: var(--paper); }
     .class-name {
-      display: block;
-      color: var(--accent); font-family: monospace;
-      font-size: 0.68rem; margin-bottom: 8px;
+      display: inline-flex; align-items: center; gap: 5px;
+      width: fit-content;
+      color: var(--ink); font-family: 'Geist Mono', monospace;
+      font-size: 0.72rem; margin-bottom: 10px;
+      background: var(--accent-soft);
+      border: 1px solid var(--border); padding: 2px 7px;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background-color 0.15s ease, color 0.15s ease;
     }
+    .class-name::after {
+      content: '⧉';
+      font-size: 0.9em; opacity: 0.4;
+      transition: opacity 0.15s ease;
+    }
+    .class-name:hover { background: #ececec; }
+    .class-name:hover::after { opacity: 0.75; }
+    .class-name:focus-visible {
+      outline: 2px solid var(--ink); outline-offset: 2px;
+    }
+    .class-name.is-copied { color: var(--success); border-color: var(--success); }
+    .class-name.is-copied::after { content: '✓'; opacity: 1; }
+    .class-name.is-static {
+      cursor: default; color: var(--ink-faint);
+      background: transparent; border-color: transparent; padding-left: 0;
+    }
+    .class-name.is-static::after { content: none; }
 
     /* ---- Image grid ---- */
     .img-grid {
@@ -249,7 +304,7 @@
       gap: 10px;
     }
     .img-card {
-      border-radius: 8px; overflow: hidden;
+      border-radius: var(--radius-lg); overflow: hidden;
       aspect-ratio: 4 / 3; position: relative;
       border: 1px solid var(--border);
     }
@@ -259,17 +314,17 @@
     .stagger-item {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 6px;
+      border-radius: var(--radius);
       padding: 13px 18px;
-      font-size: 0.85rem;
+      font-size: 0.88rem;
     }
 
     /* ---- Repeat demo ---- */
     .repeat-note {
-      font-size: 0.78rem; color: var(--ink-muted);
+      font-size: 0.82rem; color: var(--ink-muted);
       background: var(--accent-soft);
-      border: 1px solid rgba(181, 67, 47, 0.18);
-      border-radius: 8px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
       padding: 12px 16px;
       margin-bottom: 18px;
     }
@@ -280,34 +335,35 @@
     }
 
     /* ---- Variable demo ---- */
-    .doc-card.is-var { padding: 26px 30px; margin-bottom: 10px; }
-    .doc-card.is-var h3 { font-size: 0.98rem; margin-bottom: 6px; font-weight: 560; color: var(--ink); }
+    .doc-card.is-var { padding: 24px 26px; margin-bottom: 10px; }
+    .doc-card.is-var h3 { font-size: 1rem; margin-bottom: 6px; font-weight: 600; color: var(--ink); }
     .doc-card.is-var .vars {
-      font-family: monospace; font-size: 0.7rem; color: var(--accent);
+      font-family: 'Geist Mono', monospace; font-size: 0.74rem; color: var(--ink-muted);
     }
 
-    /* ---- Utility ---- */
+    /* ---- Utility (shadcn secondary/outline button) ---- */
     .btn {
-      font-size: 0.7rem; padding: 5px 11px;
-      border-radius: 6px; border: 1px solid var(--border-strong);
-      background: transparent; color: var(--ink-muted);
-      cursor: pointer; transition: color 0.15s, border-color 0.15s;
-      font-family: monospace;
+      font-size: 0.78rem; padding: 5px 12px;
+      border-radius: var(--radius); border: 1px solid var(--border);
+      background: var(--card); color: var(--ink);
+      cursor: pointer; transition: background-color 0.15s, border-color 0.15s;
+      font-family: inherit; font-weight: 500;
+      white-space: nowrap;
     }
-    .btn:hover { color: var(--ink); border-color: var(--ink-faint); }
+    .btn:hover { background: var(--accent-soft); border-color: var(--border-strong); }
     .section-header-row {
       display: flex; align-items: flex-start; justify-content: space-between;
-      margin-bottom: 32px;
+      margin-bottom: 28px;
       gap: 16px;
     }
 
     /* ---- Footer ---- */
     footer {
       border-top: 1px solid var(--border);
-      padding: 32px 0 0;
+      padding: 28px 0 0;
       display: flex; align-items: center; justify-content: space-between;
-      font-size: 0.7rem; color: var(--ink-faint);
-      font-family: monospace;
+      font-size: 0.74rem; color: var(--ink-faint);
+      font-family: 'Geist Mono', monospace;
     }
 
     /* ---- Responsive ---- */
@@ -438,33 +494,52 @@ initUmination();</code></pre>
         </div>
         <div class="card-grid">
           <div class="doc-card umn-fade-in">
-            <span class="class-name">umn-fade-in</span>
+            <span class="class-name" role="button" tabindex="0">umn-fade-in</span>
             フェードイン
           </div>
           <div class="doc-card umn-slide-up">
-            <span class="class-name">umn-slide-up</span>
+            <span class="class-name" role="button" tabindex="0">umn-slide-up</span>
             下から上へ
           </div>
           <div class="doc-card umn-slide-down">
-            <span class="class-name">umn-slide-down</span>
+            <span class="class-name" role="button" tabindex="0">umn-slide-down</span>
             上から下へ
           </div>
           <div class="doc-card umn-slide-left">
-            <span class="class-name">umn-slide-left</span>
+            <span class="class-name" role="button" tabindex="0">umn-slide-left</span>
             右から左へ
           </div>
           <div class="doc-card umn-slide-right">
-            <span class="class-name">umn-slide-right</span>
+            <span class="class-name" role="button" tabindex="0">umn-slide-right</span>
             左から右へ
           </div>
           <div class="doc-card umn-blur-in">
-            <span class="class-name">umn-blur-in</span>
+            <span class="class-name" role="button" tabindex="0">umn-blur-in</span>
             ブラーから鮮明に
           </div>
           <div class="doc-card umn-scale-in">
-            <span class="class-name">umn-scale-in</span>
+            <span class="class-name" role="button" tabindex="0">umn-scale-in</span>
             スケールアップ
           </div>
+        </div>
+        <div class="code-block" style="margin-top:16px;">
+          <div class="code-block-header">
+            <span>HTML</span>
+            <button class="copy-btn" data-copy='&lt;div class="umn-fade-in"&gt;Fade In&lt;/div&gt;
+&lt;div class="umn-slide-up"&gt;Slide Up&lt;/div&gt;
+&lt;div class="umn-slide-down"&gt;Slide Down&lt;/div&gt;
+&lt;div class="umn-slide-left"&gt;Slide Left&lt;/div&gt;
+&lt;div class="umn-slide-right"&gt;Slide Right&lt;/div&gt;
+&lt;div class="umn-blur-in"&gt;Blur In&lt;/div&gt;
+&lt;div class="umn-scale-in"&gt;Scale In&lt;/div&gt;'>Copy</button>
+          </div>
+          <pre><code>&lt;div class="umn-fade-in"&gt;Fade In&lt;/div&gt;
+&lt;div class="umn-slide-up"&gt;Slide Up&lt;/div&gt;
+&lt;div class="umn-slide-down"&gt;Slide Down&lt;/div&gt;
+&lt;div class="umn-slide-left"&gt;Slide Left&lt;/div&gt;
+&lt;div class="umn-slide-right"&gt;Slide Right&lt;/div&gt;
+&lt;div class="umn-blur-in"&gt;Blur In&lt;/div&gt;
+&lt;div class="umn-scale-in"&gt;Scale In&lt;/div&gt;</code></pre>
         </div>
       </section>
 
@@ -481,19 +556,19 @@ initUmination();</code></pre>
         <p class="step-label">hover してみてください</p>
         <div class="card-grid">
           <div class="doc-card is-hover umn-hover-lift">
-            <span class="class-name">umn-hover-lift</span>
+            <span class="class-name" role="button" tabindex="0">umn-hover-lift</span>
             浮き上がる
           </div>
           <div class="doc-card is-hover umn-hover-border">
-            <span class="class-name">umn-hover-border</span>
+            <span class="class-name" role="button" tabindex="0">umn-hover-border</span>
             枠線が変化
           </div>
           <div class="doc-card is-hover umn-hover-tilt">
-            <span class="class-name">umn-hover-tilt</span>
+            <span class="class-name" role="button" tabindex="0">umn-hover-tilt</span>
             軽く傾く
           </div>
           <div class="doc-card is-hover umn-hover-fade">
-            <span class="class-name">umn-hover-fade</span>
+            <span class="class-name" role="button" tabindex="0">umn-hover-fade</span>
             opacity が変化
           </div>
         </div>
@@ -535,44 +610,44 @@ initUmination();</code></pre>
 
         <p class="step-label" style="margin-top:28px;">text / line</p>
         <div class="card-grid">
-          <div class="doc-card is-hover"><span class="class-name">umn-hover-underline</span><span class="umn-hover-underline">下線が伸びる</span></div>
-          <div class="doc-card is-hover"><span class="class-name">umn-hover-underline-center</span><span class="umn-hover-underline-center">中央から広がる</span></div>
-          <div class="doc-card is-hover"><span class="class-name">umn-hover-underline-thick</span><span class="umn-hover-underline-thick">太さ・余白が変化</span></div>
-          <div class="doc-card is-hover"><span class="class-name">umn-hover-underline-sweep</span><span class="umn-hover-underline-sweep">グラデーションで現れる</span></div>
-          <div class="doc-card is-hover"><span class="class-name">umn-hover-text-color</span><span class="umn-hover-text-color" style="color:var(--ink-faint)">文字色のみ変化</span></div>
-          <div class="doc-card is-hover"><span class="class-name">umn-hover-tracking</span><span class="umn-hover-tracking">字間が開く</span></div>
-          <div class="doc-card is-hover"><span class="class-name">umn-hover-strike</span><span class="umn-hover-strike">打ち消し線が伸びる</span></div>
+          <div class="doc-card is-hover"><span class="class-name" role="button" tabindex="0">umn-hover-underline</span><span class="umn-hover-underline">下線が伸びる</span></div>
+          <div class="doc-card is-hover"><span class="class-name" role="button" tabindex="0">umn-hover-underline-center</span><span class="umn-hover-underline-center">中央から広がる</span></div>
+          <div class="doc-card is-hover"><span class="class-name" role="button" tabindex="0">umn-hover-underline-thick</span><span class="umn-hover-underline-thick">太さ・余白が変化</span></div>
+          <div class="doc-card is-hover"><span class="class-name" role="button" tabindex="0">umn-hover-underline-sweep</span><span class="umn-hover-underline-sweep">グラデーションで現れる</span></div>
+          <div class="doc-card is-hover"><span class="class-name" role="button" tabindex="0">umn-hover-text-color</span><span class="umn-hover-text-color" style="color:var(--ink-faint)">文字色のみ変化</span></div>
+          <div class="doc-card is-hover"><span class="class-name" role="button" tabindex="0">umn-hover-tracking</span><span class="umn-hover-tracking">字間が開く</span></div>
+          <div class="doc-card is-hover"><span class="class-name" role="button" tabindex="0">umn-hover-strike</span><span class="umn-hover-strike">打ち消し線が伸びる</span></div>
         </div>
 
         <p class="step-label" style="margin-top:28px;">ボタン / 汎用コンテナ</p>
         <div class="card-grid">
-          <div class="doc-card is-hover"><span class="class-name">umn-hover-fill</span><button class="btn umn-hover-fill">Button</button></div>
-          <div class="doc-card is-hover"><span class="class-name">umn-hover-invert</span><button class="btn umn-hover-invert">Button</button></div>
-          <div class="doc-card is-hover"><span class="class-name">umn-hover-frame</span><button class="btn umn-hover-frame">Button</button></div>
-          <div class="doc-card is-hover"><span class="class-name">umn-hover-outline</span><button class="btn umn-hover-outline">Button</button></div>
-          <div class="doc-card is-hover"><span class="class-name">umn-hover-press</span><button class="btn umn-hover-press">Button</button></div>
-          <div class="doc-card is-hover"><span class="class-name">umn-hover-ring</span><button class="btn umn-hover-ring">Button</button></div>
-          <div class="doc-card is-hover umn-hover-scale"><span class="class-name">umn-hover-scale</span>コンテナ全体が拡大</div>
+          <div class="doc-card is-hover"><span class="class-name" role="button" tabindex="0">umn-hover-fill</span><button class="btn umn-hover-fill">Button</button></div>
+          <div class="doc-card is-hover"><span class="class-name" role="button" tabindex="0">umn-hover-invert</span><button class="btn umn-hover-invert">Button</button></div>
+          <div class="doc-card is-hover"><span class="class-name" role="button" tabindex="0">umn-hover-frame</span><button class="btn umn-hover-frame">Button</button></div>
+          <div class="doc-card is-hover"><span class="class-name" role="button" tabindex="0">umn-hover-outline</span><button class="btn umn-hover-outline">Button</button></div>
+          <div class="doc-card is-hover"><span class="class-name" role="button" tabindex="0">umn-hover-press</span><button class="btn umn-hover-press">Button</button></div>
+          <div class="doc-card is-hover"><span class="class-name" role="button" tabindex="0">umn-hover-ring</span><button class="btn umn-hover-ring">Button</button></div>
+          <div class="doc-card is-hover umn-hover-scale"><span class="class-name" role="button" tabindex="0">umn-hover-scale</span>コンテナ全体が拡大</div>
         </div>
 
         <p class="step-label" style="margin-top:28px;">矢印・アイコン付与 / リンク・ナビ</p>
         <div class="card-grid">
-          <div class="doc-card is-hover"><span class="class-name">umn-hover-arrow</span><a href="#" class="umn-hover-arrow" onclick="return false;">Read more</a></div>
-          <div class="doc-card is-hover"><span class="class-name">umn-hover-arrow-in</span><a href="#" class="umn-hover-arrow-in" onclick="return false;">Read more</a></div>
-          <div class="doc-card is-hover"><span class="class-name">umn-hover-arrow-rotate</span><a href="#" class="umn-hover-arrow-rotate" onclick="return false;">External</a></div>
-          <div class="doc-card is-hover"><span class="class-name">umn-hover-bracket</span><a href="#" class="umn-hover-bracket" onclick="return false;">Read more</a></div>
-          <div class="doc-card is-hover"><span class="class-name">umn-hover-nav-highlight</span><a href="#" class="umn-hover-nav-highlight" onclick="return false;" style="padding:4px 8px;">Nav item</a></div>
-          <div class="doc-card is-hover"><span class="class-name">umn-hover-bounce</span><a href="#" class="umn-hover-bounce" onclick="return false;">Scroll ↓</a></div>
-          <div class="doc-card is-hover"><span class="class-name">umn-hover-push</span><a href="#" class="umn-hover-push" onclick="return false;">Read more</a></div>
+          <div class="doc-card is-hover"><span class="class-name" role="button" tabindex="0">umn-hover-arrow</span><a href="#" class="umn-hover-arrow" onclick="return false;">Read more</a></div>
+          <div class="doc-card is-hover"><span class="class-name" role="button" tabindex="0">umn-hover-arrow-in</span><a href="#" class="umn-hover-arrow-in" onclick="return false;">Read more</a></div>
+          <div class="doc-card is-hover"><span class="class-name" role="button" tabindex="0">umn-hover-arrow-rotate</span><a href="#" class="umn-hover-arrow-rotate" onclick="return false;">External</a></div>
+          <div class="doc-card is-hover"><span class="class-name" role="button" tabindex="0">umn-hover-bracket</span><a href="#" class="umn-hover-bracket" onclick="return false;">Read more</a></div>
+          <div class="doc-card is-hover"><span class="class-name" role="button" tabindex="0">umn-hover-nav-highlight</span><a href="#" class="umn-hover-nav-highlight" onclick="return false;" style="padding:4px 8px;">Nav item</a></div>
+          <div class="doc-card is-hover"><span class="class-name" role="button" tabindex="0">umn-hover-bounce</span><a href="#" class="umn-hover-bounce" onclick="return false;">Scroll ↓</a></div>
+          <div class="doc-card is-hover"><span class="class-name" role="button" tabindex="0">umn-hover-push</span><a href="#" class="umn-hover-push" onclick="return false;">Read more</a></div>
         </div>
 
         <p class="step-label" style="margin-top:28px;">カード / コンテナ</p>
         <div class="card-grid">
-          <div class="doc-card is-hover umn-hover-overlay" style="position:relative;"><span class="class-name">umn-hover-overlay</span>Card title</div>
-          <div class="doc-card is-hover umn-hover-corner"><span class="class-name">umn-hover-corner</span>Card title</div>
-          <div class="doc-card is-hover umn-hover-saturate" style="background:linear-gradient(135deg,#e4e0d6,#cfc9ba);"><span class="class-name">umn-hover-saturate</span>Card title</div>
-          <div class="doc-card is-hover umn-hover-content-lift"><span class="class-name">umn-hover-content-lift</span><div>最後の子要素が浮く</div></div>
-          <div class="doc-card is-hover umn-hover-reveal" style="overflow:hidden;"><span class="class-name">umn-hover-reveal</span><div>最後の子要素が現れる</div></div>
+          <div class="doc-card is-hover umn-hover-overlay" style="position:relative;"><span class="class-name" role="button" tabindex="0">umn-hover-overlay</span>Card title</div>
+          <div class="doc-card is-hover umn-hover-corner"><span class="class-name" role="button" tabindex="0">umn-hover-corner</span>Card title</div>
+          <div class="doc-card is-hover umn-hover-saturate" style="background:linear-gradient(135deg,#e4e0d6,#cfc9ba);"><span class="class-name" role="button" tabindex="0">umn-hover-saturate</span>Card title</div>
+          <div class="doc-card is-hover umn-hover-content-lift"><span class="class-name" role="button" tabindex="0">umn-hover-content-lift</span><div>最後の子要素が浮く</div></div>
+          <div class="doc-card is-hover umn-hover-reveal" style="overflow:hidden;"><span class="class-name" role="button" tabindex="0">umn-hover-reveal</span><div>最後の子要素が現れる</div></div>
         </div>
       </section>
 
@@ -587,19 +662,19 @@ initUmination();</code></pre>
         <p class="section-lead">常時ループするスクロール誘導インジケーター。IntersectionObserver も :hover も使わない、純粋な animation ループ。配置は利用側の責務。</p>
         <div class="card-grid">
           <div class="doc-card is-hover" style="display:flex; flex-direction:column; align-items:center; gap:12px; padding:28px 15px;">
-            <span class="class-name">umn-scroll-mouse</span>
+            <span class="class-name" role="button" tabindex="0">umn-scroll-mouse</span>
             <div class="umn-scroll-mouse"></div>
           </div>
           <div class="doc-card is-hover" style="display:flex; flex-direction:column; align-items:center; gap:12px; padding:28px 15px;">
-            <span class="class-name">umn-scroll-chevron</span>
+            <span class="class-name" role="button" tabindex="0">umn-scroll-chevron</span>
             <div class="umn-scroll-chevron"></div>
           </div>
           <div class="doc-card is-hover" style="display:flex; flex-direction:column; align-items:center; gap:12px; padding:28px 15px;">
-            <span class="class-name">umn-scroll-line</span>
+            <span class="class-name" role="button" tabindex="0">umn-scroll-line</span>
             <div class="umn-scroll-line"></div>
           </div>
           <div class="doc-card is-hover" style="display:flex; flex-direction:column; align-items:center; gap:12px; padding:28px 15px;">
-            <span class="class-name">umn-scroll-text</span>
+            <span class="class-name" role="button" tabindex="0">umn-scroll-text</span>
             <div class="umn-scroll-text">Scroll</div>
           </div>
         </div>
@@ -685,55 +760,68 @@ initUmination();</code></pre>
         <p class="step-label">Delay</p>
         <div class="card-grid">
           <div class="doc-card umn-fade-in">
-            <span class="class-name">（なし）</span>0ms
+            <span class="class-name is-static">（なし）</span>0ms
           </div>
           <div class="doc-card umn-fade-in umn-delay-100">
-            <span class="class-name">umn-delay-100</span>100ms
+            <span class="class-name" role="button" tabindex="0">umn-delay-100</span>100ms
           </div>
           <div class="doc-card umn-fade-in umn-delay-200">
-            <span class="class-name">umn-delay-200</span>200ms
+            <span class="class-name" role="button" tabindex="0">umn-delay-200</span>200ms
           </div>
           <div class="doc-card umn-fade-in umn-delay-300">
-            <span class="class-name">umn-delay-300</span>300ms
+            <span class="class-name" role="button" tabindex="0">umn-delay-300</span>300ms
           </div>
           <div class="doc-card umn-fade-in umn-delay-400">
-            <span class="class-name">umn-delay-400</span>400ms
+            <span class="class-name" role="button" tabindex="0">umn-delay-400</span>400ms
           </div>
           <div class="doc-card umn-fade-in umn-delay-500">
-            <span class="class-name">umn-delay-500</span>500ms
+            <span class="class-name" role="button" tabindex="0">umn-delay-500</span>500ms
           </div>
           <div class="doc-card umn-fade-in umn-delay-700">
-            <span class="class-name">umn-delay-700</span>700ms
+            <span class="class-name" role="button" tabindex="0">umn-delay-700</span>700ms
           </div>
           <div class="doc-card umn-fade-in umn-delay-1000">
-            <span class="class-name">umn-delay-1000</span>1000ms
+            <span class="class-name" role="button" tabindex="0">umn-delay-1000</span>1000ms
           </div>
         </div>
 
         <p class="step-label">Duration</p>
         <div class="card-grid">
           <div class="doc-card umn-slide-up umn-duration-fast">
-            <span class="class-name">umn-duration-fast</span>0.4s
+            <span class="class-name" role="button" tabindex="0">umn-duration-fast</span>0.4s
           </div>
           <div class="doc-card umn-slide-up umn-duration-normal">
-            <span class="class-name">umn-duration-normal</span>0.8s（default）
+            <span class="class-name" role="button" tabindex="0">umn-duration-normal</span>0.8s（default）
           </div>
           <div class="doc-card umn-slide-up umn-duration-slow">
-            <span class="class-name">umn-duration-slow</span>1.4s
+            <span class="class-name" role="button" tabindex="0">umn-duration-slow</span>1.4s
           </div>
         </div>
 
         <p class="step-label">Ease</p>
         <div class="card-grid">
           <div class="doc-card umn-slide-up umn-ease-soft umn-duration-slow">
-            <span class="class-name">umn-ease-soft</span>ease-in-out
+            <span class="class-name" role="button" tabindex="0">umn-ease-soft</span>ease-in-out
           </div>
           <div class="doc-card umn-slide-up umn-ease-out umn-duration-slow">
-            <span class="class-name">umn-ease-out</span>ease-out
+            <span class="class-name" role="button" tabindex="0">umn-ease-out</span>ease-out
           </div>
           <div class="doc-card umn-slide-up umn-ease-snappy umn-duration-slow">
-            <span class="class-name">umn-ease-snappy</span>snappy
+            <span class="class-name" role="button" tabindex="0">umn-ease-snappy</span>snappy
           </div>
+        </div>
+
+        <p class="step-label">組み合わせて使う</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <span>HTML</span>
+            <button class="copy-btn" data-copy='&lt;div class="umn-slide-up umn-delay-200 umn-duration-slow umn-ease-out"&gt;
+  Content
+&lt;/div&gt;'>Copy</button>
+          </div>
+          <pre><code>&lt;div class="umn-slide-up umn-delay-200 umn-duration-slow umn-ease-out"&gt;
+  Content
+&lt;/div&gt;</code></pre>
         </div>
       </section>
 
@@ -808,14 +896,23 @@ initUmination();</code></pre>
         <p class="section-lead">スクロールで画面に入ると1文字ずつタイプされる。複数行対応、タイプ中のみカーソルが点滅する。</p>
         <div class="card-grid">
           <div class="doc-card">
-            <span class="class-name">umn-typing</span>
+            <span class="class-name" role="button" tabindex="0">umn-typing</span>
             <h3 class="umn-typing" style="font-size: 1.3rem; margin-top: 10px;">umination で作る、
 タイプライター演出。</h3>
           </div>
           <div class="doc-card">
-            <span class="class-name">umn-typing umn-typing-fast</span>
+            <span class="class-name" role="button" tabindex="0">umn-typing umn-typing-fast</span>
             <p class="umn-typing" style="margin-top: 10px;">高速表示のバリエーション。</p>
           </div>
+        </div>
+        <div class="code-block" style="margin-top:16px;">
+          <div class="code-block-header">
+            <span>HTML</span>
+            <button class="copy-btn" data-copy='&lt;h2 class="umn-typing"&gt;1文字ずつタイプされる見出し&lt;/h2&gt;
+&lt;p class="umn-typing umn-typing-fast"&gt;高速表示のバリエーション。&lt;/p&gt;'>Copy</button>
+          </div>
+          <pre><code>&lt;h2 class="umn-typing"&gt;1文字ずつタイプされる見出し&lt;/h2&gt;
+&lt;p class="umn-typing umn-typing-fast"&gt;高速表示のバリエーション。&lt;/p&gt;</code></pre>
         </div>
       </section>
 
@@ -830,21 +927,34 @@ initUmination();</code></pre>
         <p class="section-lead">animation-timeline: view() によるスクロール連動の視差。未対応ブラウザでは通常表示に degrade する。方向は umn-parallax（up・デフォルト）/ -down / -left / -right、速度は umn-parallax-slow / -fast または --umn-parallax-speed で指定する。</p>
         <div class="card-grid">
           <div class="doc-card umn-parallax">
-            <span class="class-name">umn-parallax</span>
+            <span class="class-name" role="button" tabindex="0">umn-parallax</span>
             up・デフォルト速度
           </div>
           <div class="doc-card umn-parallax umn-parallax-down umn-parallax-fast">
-            <span class="class-name">umn-parallax-down umn-parallax-fast</span>
+            <span class="class-name" role="button" tabindex="0">umn-parallax-down umn-parallax-fast</span>
             down・高速
           </div>
           <div class="doc-card umn-parallax umn-parallax-left umn-parallax-slow">
-            <span class="class-name">umn-parallax-left umn-parallax-slow</span>
+            <span class="class-name" role="button" tabindex="0">umn-parallax-left umn-parallax-slow</span>
             left・低速
           </div>
           <div class="doc-card umn-parallax umn-parallax-right" style="--umn-parallax-speed: 0.4;">
-            <span class="class-name">umn-parallax-right</span>
+            <span class="class-name" role="button" tabindex="0">umn-parallax-right</span>
             right・任意値 (--umn-parallax-speed: 0.4)
           </div>
+        </div>
+        <div class="code-block" style="margin-top:16px;">
+          <div class="code-block-header">
+            <span>HTML</span>
+            <button class="copy-btn" data-copy='&lt;div class="umn-parallax"&gt;up・デフォルト&lt;/div&gt;
+&lt;div class="umn-parallax umn-parallax-down umn-parallax-fast"&gt;down・高速&lt;/div&gt;
+&lt;div class="umn-parallax umn-parallax-left umn-parallax-slow"&gt;left・低速&lt;/div&gt;
+&lt;div class="umn-parallax umn-parallax-right" style="--umn-parallax-speed: 0.4;"&gt;right・任意値&lt;/div&gt;'>Copy</button>
+          </div>
+          <pre><code>&lt;div class="umn-parallax"&gt;up・デフォルト&lt;/div&gt;
+&lt;div class="umn-parallax umn-parallax-down umn-parallax-fast"&gt;down・高速&lt;/div&gt;
+&lt;div class="umn-parallax umn-parallax-left umn-parallax-slow"&gt;left・低速&lt;/div&gt;
+&lt;div class="umn-parallax umn-parallax-right" style="--umn-parallax-speed: 0.4;"&gt;right・任意値&lt;/div&gt;</code></pre>
         </div>
       </section>
 
@@ -889,6 +999,49 @@ window.Umination.destroy()  // observer を解除・内部状態リセット</co
 </div>
 
 <script>
+  /* ---- 軽い構文ハイライト（表示のみ。コピーは data-copy を使うため非影響） ---- */
+  (function highlightCodeBlocks() {
+    const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+    // HTML: タグ名・属性名・属性値（escape 済み文字列に対する単一パス）
+    function hlHtml(code) {
+      let out = esc(code);
+      out = out.replace(/&lt;!--[\s\S]*?--&gt;/g, (m) => `<span class="tok-com">${m}</span>`);
+      out = out.replace(
+        /(&lt;\/?)([a-zA-Z][\w:-]*)((?:[^&]|&(?!gt;))*?)(\/?&gt;)/g,
+        (full, open, name, attrs, close) => {
+          const a = attrs.replace(
+            /([a-zA-Z-]+)(=)("[^"]*")/g,
+            (m, an, eq, val) => `<span class="tok-attr">${an}</span>${eq}<span class="tok-str">${val}</span>`
+          );
+          return `<span class="tok-tag">${open}${name}</span>${a}<span class="tok-tag">${close}</span>`;
+        }
+      );
+      return out;
+    }
+
+    // JS / Shell / CSS: コメント + 文字列（単一パスで再スキャンを防止）
+    function hlGeneric(code) {
+      return esc(code).replace(
+        /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|('[^']*'|"[^"]*"|`[^`]*`)/g,
+        (m, com, str) => (com ? `<span class="tok-com">${com}</span>` : `<span class="tok-str">${str}</span>`)
+      );
+    }
+
+    document.querySelectorAll('.code-block').forEach((block) => {
+      try {
+        const code = block.querySelector('pre code');
+        if (!code) return;
+        const langEl = block.querySelector('.code-block-header span');
+        const lang = (langEl ? langEl.textContent : '').toLowerCase();
+        const raw = code.textContent;
+        code.innerHTML = lang.includes('html') ? hlHtml(raw) : hlGeneric(raw);
+      } catch (e) {
+        /* 失敗時は plain な light-on-dark 表示のまま */
+      }
+    });
+  })();
+
   /* ---- Copy ---- */
   document.querySelectorAll('.copy-btn[data-copy]').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -902,6 +1055,25 @@ window.Umination.destroy()  // observer を解除・内部状態リセット</co
           btn.classList.remove('copied');
         }, 1500);
       });
+    });
+  });
+
+  /* ---- Class name click-to-copy ---- */
+  function copyClassName(el) {
+    if (el.classList.contains('is-static')) return;
+    navigator.clipboard.writeText(el.textContent.trim()).then(() => {
+      el.classList.add('is-copied');
+      clearTimeout(el._copyTimer);
+      el._copyTimer = setTimeout(() => el.classList.remove('is-copied'), 1200);
+    });
+  }
+  document.querySelectorAll('.class-name').forEach(el => {
+    el.addEventListener('click', () => copyClassName(el));
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        copyClassName(el);
+      }
     });
   });
 
