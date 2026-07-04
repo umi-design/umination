@@ -1,7 +1,16 @@
 import { defineConfig } from 'vite'
 
-export default defineConfig(({ mode }) => {
+export default defineConfig(({ mode, command }) => {
   const isMin = mode === 'min'
+
+  if (command === 'serve') {
+    return {
+      root: 'examples',
+      server: {
+        open: true,
+      },
+    }
+  }
 
   return {
     build: {
