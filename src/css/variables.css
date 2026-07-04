@@ -32,4 +32,5 @@
   --umn-scroll-color: currentColor;
   --umn-scroll-duration: 1.6s;
   --umn-scroll-size: 26px;
+  --umn-typing-speed: 45ms;
 }
