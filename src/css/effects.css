@@ -626,3 +626,35 @@ html.umn-ready .umn-scale-in.is-visible {
     animation: none;
   }
 }
+
+/* ============================================
+   umn-typing — タイプライター（JS 駆動）
+   umn-char への分割・is-typed 付与は typing.ts が行う。
+   ============================================ */
+html.umn-ready .umn-typing .umn-char {
+  opacity: 0;
+}
+html.umn-ready .umn-typing .umn-char.is-typed {
+  opacity: 1;
+}
+.umn-typing-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 1px;
+  background: currentColor;
+  vertical-align: text-bottom;
+  animation: umn-typing-cursor-kf 0.8s step-end infinite;
+}
+@keyframes umn-typing-cursor-kf {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html.umn-ready .umn-typing .umn-char {
+    opacity: 1 !important;
+  }
+  .umn-typing-cursor {
+    display: none;
+  }
+}
