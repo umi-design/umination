@@ -345,9 +345,19 @@ import { initUmination, refreshUmination, destroyUmination, UMINATION_EFFECT_CLA
 
 ## npm package
 
+npm registry には publish していない。GitHub リポジトリへの git 依存として導入する。
+
+```bash
+npm install github:umi-design/umination#main
 ```
-@umi-design/umination
+
+```json
+"dependencies": {
+  "umination": "github:umi-design/umination#main"
+}
 ```
+
+インストール時に `prepare` スクリプトが自動で `dist/` をビルドする。最新版を取り込みたい場合は `npm update umination`（pnpm の場合は `pnpm update umination`）を実行する。バージョンはタグ固定せず main ブランチ追従。
 
 ## v0.1 の範囲
 

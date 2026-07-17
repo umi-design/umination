@@ -18,7 +18,8 @@
     "dev": "vite",
     "build": "vite build --mode dev && vite build --mode min",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepare": "npm run build"
   },
   "devDependencies": {
     "typescript": "^5.5.4",
